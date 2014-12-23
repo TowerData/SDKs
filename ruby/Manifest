@@ -1,0 +1,7 @@
+CHANGELOG
+LICENSE
+Manifest
+README.md
+Rakefile
+lib/towerdata_api.rb
+towerdata_api.gemspec

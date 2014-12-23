@@ -1,33 +1,10 @@
-Personalization Dev Kits
-========================
-Development kits and useful examples for personalizing a website with
-the TowerData Personalization API.
-
-For general information regarding the Personalization API, visit
-http://www.rapleaf.com/developers/api_docs/personalization/direct.
-
-
-Contributing
-============
-If you have suggestions or patches, feel free to email us at
-<developer at towerdata dot com>. We look forward to hearing from you!
-
-
-Contributors
-============
-Gareth Aye <gareth at towerdata dot com>
-Sean Carr <sean at towerdata dot com>
-
-
-License
-=======
-* The TowerData Personalization API has separate terms and conditions, which can
+* The Rapleaf Personalization API has separate terms and conditions, which can
   be found at http://www.rapleaf.com/developers/api_usage.
 * If you send us code, please keep in mind that it will be distributed under
   the same license as the rest of the project.
 * This code is licensed under the Apache License which follows...
 
-Copyright 2014 TowerData
+Copyright 2011 Rapleaf
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

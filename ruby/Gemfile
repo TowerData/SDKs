@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gemspec
+
+platforms :ruby_18, :jruby do
+  gem 'json'
+end
+
+
