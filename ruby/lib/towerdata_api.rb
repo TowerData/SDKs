@@ -18,9 +18,9 @@ require "net/https"
 require "timeout"
 require "digest"
 require "open-uri"
-require "tower_data_api/configuration"
-require "tower_data_api/errors"
-require "tower_data_api/email_validation"
+require "towerdata_api/configuration"
+require "towerdata_api/errors"
+require "towerdata_api/email_validation"
 
 module TowerDataApi
   HOST= "api.towerdata.com".freeze

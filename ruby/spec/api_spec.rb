@@ -10,7 +10,7 @@ describe 'api_calls' do
     before :each do
       # Api key must has eam and email_validation
       TowerDataApi::Configuration.begin do |config|
-        config.api_key = 'api_key'
+        config.api_key = 'api key'
       end
       @api = TowerDataApi::Api.new  
     end
@@ -52,7 +52,7 @@ describe 'api_calls' do
       end
 
       it 'raise error if validation is not available' do
-        api =  TowerDataApi::Api.new 'simple_api_key' 
+        api =  TowerDataApi::Api.new 'simple_api' 
         expect{ api.get_email_validation 'milbojyu@yaho0.com'}.to raise_error(TowerDataApi::Error::Api)
       end
 
@@ -75,7 +75,8 @@ describe 'api_calls' do
 
     it 'util_name_to_gender' do
       naz = @api.query_by_naz('bojan', 'milosavjevic', '111070')
-      puts naz
+      expect( naz.class).to be Hash
+      expect( naz["gender"]).to eql "Male"
     end
 
     it 'bulk query' do

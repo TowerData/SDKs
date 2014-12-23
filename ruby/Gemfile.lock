@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tower_data_api (1.3)
+    towerdata_api (1.3)
       json
       json
 
@@ -9,7 +9,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    json (1.8.1)
     json (1.8.1-java)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
@@ -26,9 +25,8 @@ GEM
 
 PLATFORMS
   java
-  ruby
 
 DEPENDENCIES
   json
   rspec
-  tower_data_api!
+  towerdata_api!

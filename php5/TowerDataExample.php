@@ -26,7 +26,7 @@
    */
    
    $person = $argv[1];
-   $api = new TowerDataApi('');
+   $api = new TowerDataApi('api_key');
    try {
      $response = $api -> query_by_email($person, $hash_email = true);
      foreach ($response as $key => $value) {

@@ -3,27 +3,27 @@ How to Use
 
 Installation
 ------------
-> gem install tower_data_api
+> gem install towerdata_api
 
 This gem depends on the "json" gem.
 
 Usage
 -----
-    > require 'tower_data_api'
+    > require 'towerdata_api'
     > api = TowerDataApi::Api.new('my secret API key')
     > h = api.query_by_email('test@rapleaf.com')
     => {"gender"=>"Male", "age"=>"25-34"}
 
 Or using global configuration
 
-> require 'tower_data_api'
-> TowerDataApi::Configuration.begin do |config|
->   config.api_key= 'my secret API key'
->   config.timeout= 10 
-> end
-> api = TowerDataApi::Api.new
-> h = api.query_by_email('test@rapleaf.com')
-=> {"gender"=>"Male", "age"=>"25-34"}
+    > require 'towerdata_api'
+    > TowerDataApi::Configuration.begin do |config|
+    >   config.api_key= 'my secret API key'
+    >   config.timeout= 10 
+    > end
+    > api = TowerDataApi::Api.new
+    > h = api.query_by_email('test@rapleaf.com')
+    => {"gender"=>"Male", "age"=>"25-34"}
 
 
 
