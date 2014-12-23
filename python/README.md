@@ -31,7 +31,7 @@ Installation
 Usage
 -----
 
->>> from rapleafApi import TowerDataApi
+>>> from towerDataApi import TowerDataApi
 >>> api = TowerDataApi.TowerDataApi('API_KEY')
 >>> api.query_by_email('test@example.com')
 {u'gender': u'Male', u'age': u'25-34'}
@@ -41,26 +41,26 @@ Query Options
 -------------
 The egg supports several ways to query TowerData's API: email, hashed email (either MD5 or SHA1 hash), name and postal (NAP), or name and ZIP+4 (NAZ).
 
-**query_by_email(self, email, hash_email = False, show_available = False)**
+**query_by_email(self, email, hash_email = False)**
 
 | This method queries TowerData's API with the specified email. 
 | If the hash_email option is set, then the email will be hashed before it's sent to TowerData.
 | If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
 
-| **query_by_md5(self, md5_email, show_available = False)**
-| **query_by_sha1(self, sha1_email, show_available = False)**
+| **query_by_md5(self, md5_email)**
+| **query_by_sha1(self, sha1_email**
 
 | These methods query TowerData's API with the specified email hashes (either MD5 or SHA1, respectively). 
 | If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
  
-**query_by_nap(self, first, last, street, city, state, email = None, show_available = False)**
+**query_by_nap(self, first, last, street, city, state, email = None)**
 
 | This method queries TowerData's API with a name and postal address: first name, last name, street, city, and state acronym (i.e., the state's 2-character postal code).
 | Though not necessary, adding an e-mail increases hit rate.
 | If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
 
 
-**query_by_naz(self, first, last, zip4, email = None, show_available = False)**
+**query_by_naz(self, first, last, zip4, email = None)**
 
 | This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash.
 | Though not necessary, adding an e-mail increases hit rate.
