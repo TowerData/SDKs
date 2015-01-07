@@ -4,7 +4,7 @@ Development kits and useful examples for personalizing a website with
 the TowerData Personalization API.
 
 For general information regarding the Personalization API, visit
-http://www.rapleaf.com/developers/api_docs/personalization/direct.
+http://www.towerdata.com/developers/api_docs/personalization/direct.
 
 
 Contributing
@@ -22,7 +22,7 @@ Sean Carr <sean at towerdata dot com>
 License
 =======
 * The TowerData Personalization API has separate terms and conditions, which can
-  be found at http://www.rapleaf.com/developers/api_usage.
+  be found at http://www.towerdata.com/developers/api_usage.
 * If you send us code, please keep in mind that it will be distributed under
   the same license as the rest of the project.
 * This code is licensed under the Apache License which follows...
