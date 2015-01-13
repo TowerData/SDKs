@@ -44,7 +44,7 @@ The gem supports several ways to query TowerData's API: email, hashed email (eit
 
 ### query_by_email(email, options)
 
-This method queries Rapleaf's API with the specified email. The options hash accepts the following keys:
+This method queries TowerData's API with the specified email. The options hash accepts the following keys:
 
  - :hash_email    => Whether to (SHA1) hash the email before querying TowerData's API with it. Defaults to nil.
 

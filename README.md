@@ -3,8 +3,8 @@ Personalization Dev Kits
 Development kits and useful examples for personalizing a website with
 the TowerData Personalization API.
 
-For general information regarding the Personalization API, visit
-http://www.towerdata.com/developers/api_docs/personalization/direct.
+For general information regarding TowerData's API, visit
+http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
 
 
 Contributing
@@ -15,14 +15,14 @@ If you have suggestions or patches, feel free to email us at
 
 Contributors
 ============
-Gareth Aye <gareth at towerdata dot com>
-Sean Carr <sean at towerdata dot com>
+Gareth Aye <gareth at rapleaf dot com>
+Sean Carr <sean at rapleaf dot com>
 
 
 License
 =======
 * The TowerData Personalization API has separate terms and conditions, which can
-  be found at http://www.towerdata.com/developers/api_usage.
+  be found at http://intelligence.towerdata.com/terms_and_conditions
 * If you send us code, please keep in mind that it will be distributed under
   the same license as the rest of the project.
 * This code is licensed under the Apache License which follows...

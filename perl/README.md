@@ -34,13 +34,13 @@ This method queries TowerData's API with the specified email. If $options is set
 ### query_by_md5($md5_email)
 ### query_by_sha1($sha1_email)
 
-These methods query TowerData's API with either the MD5 or the SHA1 of an email. You must hash the email prior to calling the functions using lower case and with white space removed.
+These methods query TowerData's API with either the MD5 or the SHA1 of an email. The email address should be in lower case and with white space removed prior to hashing.
 
 ### query_by_nap($first, $last, $street, $city, $state, $optional_email)
 
 This method queries TowerData's API with a name and postal address: first name, last name, street, city, and state acronym (i.e., the state's 2-character postal code). It also accepts an optional email address, which increases the match rate.
 
-### query_by_naz(first, last, zip4, options)
+### query_by_naz($first, $last, $zip4, $optional_email)
 
 This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash. It also accepts an optional email address, which increases the match rate.
 
