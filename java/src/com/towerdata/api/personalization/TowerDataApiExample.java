@@ -26,7 +26,7 @@ import java.util.Map;
 public class TowerDataApiExample {
   public static void main(String[] args) {
     TowerDataApi api = (args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_KEY");
-    final String email = (args[1] != null) ? args[1]:"jim@gmail.com";
+    final String email = (args[1] != null) ? args[1]:"test@example.com";
 
     // Query by email
     try {
@@ -46,12 +46,12 @@ public class TowerDataApiExample {
         });
         add(new HashMap<String, String>(){
           {
-            put("email", "topdog@gmail.com");
+            put("email", "test@example.com");
           }
         });
         add(new HashMap<String, String>(){
           {
-            put("email", "baller@gmail.com");
+            put("email", "test@example.com");
             put("zip", "21044");
             put("city", "Columbia");
             put("state", "Maryland");
