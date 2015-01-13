@@ -23,10 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TowerDataExample {
+public class TowerDataApiExample {
   public static void main(String[] args) {
     TowerDataApi api = (args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_KEY");
     final String email = (args[1] != null) ? args[1]:"jim@gmail.com";
+
     // Query by email
     try {
       JSONObject response = api.queryByEmail(email, true);
