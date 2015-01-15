@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'api_calls' do
-  API_KEY= ''
-  SIMPLE_API_KEY= ''
+  API_KEY= '98948d601e3be0d5a26c79222947150c'
+  SIMPLE_API_KEY= '202e2bdc3ffa9d98c8ac460b99f9ab3c'
   it 'query without configuration' do
     api = TowerDataApi::Api.new API_KEY
     value = api.query_by_email 'milboj@gmail.com'

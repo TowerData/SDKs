@@ -15,20 +15,10 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Rapleaf_api", "--main", "README.md"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{towerdata_api}
+  s.license = 'Apache-2.0'
+  
   s.rubygems_version = ">=1.6.1"
   s.summary = %q{A library for interacting with TowerData's Personalization API.}
-  s.add_development_dependency "rspec"
-  s.add_dependency(%q<json>, [">= 0"])
+  s.add_development_dependency "rspec", '~>3.1'
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<json>, [">= 0"])
-    else
-      s.add_dependency(%q<json>, [">= 0"])
-    end
-  else
-    s.add_dependency(%q<json>, [">= 0"])
-  end
 end
