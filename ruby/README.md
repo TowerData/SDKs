@@ -9,20 +9,20 @@ This gem depends on the "json" gem.
 
 Usage
 -----
-    > require 'towerdata_api'
-    > api = TowerDataApi::Api.new('my secret API key')
-    > h = api.query_by_email('test@rapleaf.com')
+    require 'towerdata_api'
+    api = TowerDataApi::Api.new('my secret API key')
+    h = api.query_by_email('test@rapleaf.com')
     => {"gender"=>"Male", "age"=>"25-34"}
 
 Or using global configuration
 
-    > require 'towerdata_api'
-    > TowerDataApi::Configuration.begin do |config|
-    >   config.api_key= 'my secret API key'
-    >   config.timeout= 10 
-    > end
-    > api = TowerDataApi::Api.new
-    > h = api.query_by_email('test@rapleaf.com')
+    require 'towerdata_api'
+    TowerDataApi::Configuration.begin do |config|
+      config.api_key= 'my secret API key'
+      config.timeout= 10 
+    end
+    api = TowerDataApi::Api.new
+    h = api.query_by_email('test@rapleaf.com')
     => {"gender"=>"Male", "age"=>"25-34"}
 
 
@@ -31,7 +31,7 @@ Constructor Options
 -------------------
 You can pass in an options hash to the API constructor, like so:
 
-    > api = TowerData::Api.new('my secret API key', :timeout => 10)
+    api = TowerData::Api.new('my secret API key', :timeout => 10)
 
 The possible options/keys accepted by the constructor are:
 
@@ -63,13 +63,13 @@ This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a s
 
  - :email          => You can include an email in your NAP query to increase the hit rate. Defaults to nil.
 
-### get_email_validation(email)
+### email_validation(email)
 
 This method queries TowerData's API with email and return email_validation object. Raise error if email_validation is not enabled. 
 
 ### valid_email?(email)
 
-This method queries TowerData's API with email and return boolean. Raise error if email_validation is not enabled. 
+This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled. 
 
 
 Contributing

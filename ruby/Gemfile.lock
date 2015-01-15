@@ -9,6 +9,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
+    json (1.8.1)
     json (1.8.1-java)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
@@ -25,6 +26,7 @@ GEM
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
   json

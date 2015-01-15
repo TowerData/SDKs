@@ -95,23 +95,29 @@ module TowerDataApi
 
 
     # For given email returns EmailValidation object
-    # This method will rise TowerDataApi::Error::Api 
+    # This method will rise TowerDataApi::Error::Unsupported 
     # if yours api key doesn't have email validation field 
     #
-    def get_email_validation email
-      result = query_by_email email
+    def email_validation email
+      begin
+        result = query_by_email email
+      rescue TowerDataApi::Error::BadRequest 
+        result = {'email_validation' => {'ok' => false}}
+      end
+
       if result.has_key? 'email_validation'
         EmailValidation.new result['email_validation']
       else
-        raise TowerDataApi::Error::Api, 'Email validation is not supported with yours api key.' 
+        raise TowerDataApi::Error::Unsupported, 'Email validation is not supported with yours api key.' 
       end
     end
 
     # Check is email valid
     # This method will rise TowerDataApi::Error::Api 
     # if yours api key doesn't have email validation field 
+    # Value can be true, false and nil 
     def valid_email? email
-      get_email_validation(email).valid?
+      email_validation(email).valid?
     end
 
 
@@ -158,8 +164,11 @@ module TowerDataApi
           http_client.get(path, HEADERS)
         end
       end
+
       if response.code =~ /^2\d\d/
         (response.body && response.body != "") ? JSON.parse(response.body) : {}
+      elsif response.code == '400' 
+        raise TowerDataApi::Error::BadRequest, "Bad request#{response.code}: \"#{response.body}\""
       else
         raise TowerDataApi::Error::Api, "Error Code #{response.code}: \"#{response.body}\""
       end
