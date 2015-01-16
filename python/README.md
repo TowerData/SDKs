@@ -26,7 +26,7 @@ Installation
 
 ::
 
-	easy_install towerDataApi
+	pip install towerDataApi
 
 Usage
 -----
@@ -45,26 +45,26 @@ The egg supports several ways to query TowerData's API: email, hashed email (eit
 
 | This method queries TowerData's API with the specified email. 
 | If the hash_email option is set, then the email will be hashed before it's sent to TowerData.
-| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
+| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which TowerData has data.
 
 | **query_by_md5(self, md5_email)**
 | **query_by_sha1(self, sha1_email**
 
 | These methods query TowerData's API with the specified email hashes (either MD5 or SHA1, respectively). 
-| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
+| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which TowerData has data.
  
 **query_by_nap(self, first, last, street, city, state, email = None)**
 
 | This method queries TowerData's API with a name and postal address: first name, last name, street, city, and state acronym (i.e., the state's 2-character postal code).
 | Though not necessary, adding an e-mail increases hit rate.
-| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
+| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which TowerData has data.
 
 
 **query_by_naz(self, first, last, zip4, email = None)**
 
 | This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash.
 | Though not necessary, adding an e-mail increases hit rate.
-| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which RapLeaf has data.
+| If the show_available option is set, then the string "Data Available" will be returned for those fields which the API account is not subscribed but for which TowerData has data.
 
 
 Contributing
@@ -76,6 +76,7 @@ If you have suggestions or patches, feel free to email us at
 Contributors
 ============
 Nicole Allard <nicole at towerdata dot com>
+Bojan  Milosavljevic <milboj at gmail dot com>
 
 
 Dependencies
@@ -83,7 +84,7 @@ Dependencies
 urllib3
 ::
 
-	easy_install urllib3
+	pip install urllib3
 
 or visit the url https://github.com/shazow/urllib3/zipball/master.
 Once you've unzipped the download, open a terminal window and navigate to the folder into which you unzipped the download. When you open the folder, one of the subdirectories is 'urllib3.' Open it. It contains a script called setup.py which you'll run via the command 'python setup.py install'.
