@@ -24,10 +24,10 @@ For the PHP version, we add two versions to appeal both to users running older v
 Example
 =======
 
-  namespace TowerData;
-  include "TowerDataApi.php";
-  
-  $person = $argv[1];
-  $response = query_by_email($person, false);
-  print_r($response);
+      namespace TowerData;
+      include "TowerDataApi.php";
+      
+      $person = $argv[1];
+      $response = query_by_email($person, false);
+      print_r($response);
 

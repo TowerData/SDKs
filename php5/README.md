@@ -29,16 +29,16 @@ For the PHP version, we add two versions to appeal both to users running older v
 Example
 =======
 
-  namespace TowerData;
-  include "TowerDataApi.php";
-   
-  $person = $argv[1];
-  $api = new TowerDataApi('api_key');
-  try {
-      $response = $api -> query_by_email($person, $hash_email = true);
-      foreach ($response as $key => $value) {
-          echo $key . " = " . $value . "\n";
+      namespace TowerData;
+      include "TowerDataApi.php";
+       
+      $person = $argv[1];
+      $api = new TowerDataApi('api_key');
+      try {
+          $response = $api -> query_by_email($person, $hash_email = true);
+          foreach ($response as $key => $value) {
+              echo $key . " = " . $value . "\n";
+          }
+      } catch (\Exception $e) {
+          echo 'Caught exception: ' .  $e->getMessage() . "\n";
       }
-  } catch (\Exception $e) {
-      echo 'Caught exception: ' .  $e->getMessage() . "\n";
-  }
