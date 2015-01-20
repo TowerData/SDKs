@@ -27,7 +27,7 @@
   
   function query_by_email($email, $hash_email = false) {
     /* Takes an e-mail and returns a hash which maps attribute fields onto attributes
-     * If the hash_email option is set, then the email will be hashed before it's sent to Rapleaf
+     * If the hash_email option is set, then the email will be hashed before it's sent to TowerData
      */
     if ($hash_email) {
       $sha1_email = sha1(strtolower($email));
