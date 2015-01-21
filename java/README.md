@@ -44,7 +44,7 @@ This method queries TowerData's API with a name and postal address: first name, 
 
 This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash. It also accepts an optional email address, which can increase the match rate.
 
-### bulkQuery('List<Map<String,String>>' set)
+### bulkQuery(set)
 
 Queries the TowerData API with an HashMap of emails or names and postal addresses and returns a JSONarray containing information on each input identifier.
 
