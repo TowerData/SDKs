@@ -1,4 +1,3 @@
-==================
 TowerData Personalization API - Python
 ==================
 

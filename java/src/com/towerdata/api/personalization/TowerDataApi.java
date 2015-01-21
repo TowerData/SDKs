@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * For general information regarding the personalization API, 
- * visit http://www.towerdata.com/developers/api_docs/personalization/direct. 
+ * For full documentation of the TowerData API visit
+ * http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
  * The personalization API's terms and conditions 
- * are stated at http://www.towerdata.com/developers/api_usage.
+ * are stated at http://intelligence.towerdata.com/terms_and_conditions
  */
 public class TowerDataApi {
   protected String apiKey;

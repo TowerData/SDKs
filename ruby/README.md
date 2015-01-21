@@ -1,3 +1,9 @@
+TowerData Personalization API - Ruby
+====================================
+
+For documentation of TowerData's personalization API, visit 
+http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+
 How to Use
 ==========
 
@@ -25,8 +31,6 @@ Or using global configuration
     h = api.query_by_email('test@rapleaf.com')
     => {"gender"=>"Male", "age"=>"25-34"}
 
-
-
 Constructor Options
 -------------------
 You can pass in an options hash to the API constructor, like so:
@@ -50,6 +54,8 @@ This method queries TowerData's API with the specified email. The options hash a
 
 ### query_by_md5(md5_email, options)
 ### query_by_sha1(sha1_email, options)
+
+These methods query TowerData's API with the hashed emails provided to them (either MD5 or SHA1, respectively). 
 
 ### query_by_nap(first, last, street, city, state, options)
 
@@ -77,10 +83,31 @@ Contributing
 If you have suggestions or patches, feel free to email us at
 [developer at towerdata dot com]. We look forward to hearing from you!
 
-
 Contributors
 ============
  - Greg Poulos [greg at rapleaf dot com]
  - Sean Carr [sean at rapleaf dot com]
  - Vlad Shulman [vlad at rapleaf dot com]
  - Bojan Milosavljevic [milboj at gmail dot com]
+
+License
+=======
+Copyright 2014 TowerData
+
+* The TowerData Personalization API has separate terms and conditions, which can
+  be found at http://intelligence.towerdata.com/terms_and_conditions
+* If you send us code, please keep in mind that it will be distributed under
+  the same license as the rest of the project.
+* This code is licensed under the Apache License which follows...
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

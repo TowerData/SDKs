@@ -25,12 +25,12 @@ import java.util.Map;
 
 public class TowerDataApiExample {
   public static void main(String[] args) {
-    TowerDataApi api = (args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_KEY");
-    final String email = (args[1] != null) ? args[1]:"test@example.com";
+    TowerDataApi api = (args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_API_KEY");
+    final String email = (args[1] != null) ? args[1]:"pete@rapleafdemo.com";
 
     // Query by email
     try {
-      JSONObject response = api.queryByEmail(email, true);
+      JSONObject response = api.queryByEmail(email, false);
       System.out.println("Query by email: \n" + response);
     } catch (Exception e) {
       e.printStackTrace();
@@ -46,15 +46,17 @@ public class TowerDataApiExample {
         });
         add(new HashMap<String, String>(){
           {
-            put("email", "test@example.com");
+            put("email", "pete@rapleafdemo.com");
           }
         });
         add(new HashMap<String, String>(){
           {
-            put("email", "test@example.com");
+            put("first", "Peter");
+            put("last", "Schlick");
+	    put("street", "112134 Leavenworth Rd.");
+            put("city", "San Francisco");
+            put("state", "CA");
             put("zip", "21044");
-            put("city", "Columbia");
-            put("state", "Maryland");
           }
         });
       }

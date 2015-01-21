@@ -1,52 +1,52 @@
-TowerData Personalization API - PHP 5
-==================
+TowerData Personalization API - Java
+====================================
 
 For documentation of TowerData's personalization API, visit 
 http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
 
-The API is queried by calling any of the query functions belonging to the TowerDataApi file. An example script, TowerDataExample, is provided. The example script takes an email as a command line parameter, connects to the TowerData service, and returns (and sends to stdout) a collection of associated key-value pairs.
-
-This sample code is for use with PHP 5. There is a separate Software Development Kit (SDK) for PHP 4.
-
-You must set your TowerData API key in TowerDataApi.php prior to using this SDK.
+There are two API jars located in /java/build. The first one
+(towerdata-api-complete) bundles json.jar with the TowerData API.
+For the other jar, json.jar is not bundled and can be found in /java/lib.
 
 Example
 -------
 
-      namespace TowerData;
-      include "TowerDataApi.php";
-       
-      $person = $argv[1];
-      $api = new TowerDataApi('api_key');
-      try {
-          $response = $api -> query_by_email($person, $hash_email = true);
-          foreach ($response as $key => $value) {
-              echo $key . " = " . $value . "\n";
-          }
-      } catch (\Exception $e) {
-          echo 'Caught exception: ' .  $e->getMessage() . "\n";
-      }
+The API is queried by calling any of the query functions belonging
+to the TowerDataApi file. An example, TowerDataExample, is
+provided. This example queries the TowerData API for an
+email. From the command line, you can compile this class as follows.
+
+      javac -cp <path-to-towerdata-api-complete.jar> TowerDataExample.java
+
+This example class takes two arguments: an api-key and the email to query.
+After compiling the class you can run it from the command line as follows.
+
+      java -cp <path-to-towerdata-api-complete.jar> com.towerdata.api.personalization.TowerDataExample <api-key> <email>
 
 Query Options
 -------------
 The SDK supports several ways to query TowerData's API: email, hashed email (either MD5 or SHA1 hash), name and postal (NAP), or name and ZIP+4 (NAZ).
 
-### query_by_email($email, $hash_email = false)
+### queryByEmail(String email, boolean hash_email)
 
 This method queries TowerData's API with the specified email. If the second parameter is set to true, the email address will be hashed to an MD5 before querying TowerData's API with it. Defaults to false.
 
-### query_by_md5($md5_email)
-### query_by_sha1($sha1_email)
+### queryByMd5(String md5Email)
+### queryBySha1(String sha1Email)
 
 These methods query TowerData's API with the hashed emails provided to them (either MD5 or SHA1, respectively). 
 
-### query_by_nap($first, $last, $street, $city, $state, $email = null)
+### queryByNap(String first, String last, String street, String city, String state, String email)
 
 This method queries TowerData's API with a name and postal address: first name, last name, street, city, and state acronym (i.e., the state's 2-character postal code). It also accepts an optional email address, which can increase the match rate.
 
-### query_by_naz($first, $last, $zip4, $email = null)
+### queryByNaz(String first, String last, String zip4, String email)
 
 This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash. It also accepts an optional email address, which can increase the match rate.
+
+### bulkQuery(List<Map<String,String>> set)
+
+Queries the TowerData API with an HashMap of emails or names and postal addresses and returns a JSONarray containing information on each input identifier.
 
 License
 -------

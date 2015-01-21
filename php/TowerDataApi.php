@@ -30,8 +30,8 @@
      * If the hash_email option is set, then the email will be hashed before it's sent to TowerData
      */
     if ($hash_email) {
-      $sha1_email = sha1(strtolower($email));
-      return query_by_sha1($sha1_email);
+      $md5_email = md5(strtolower($email));
+      return query_by_md5($md5_email);
     } else {
       $url = TOWERDATA_BASE_PATH . "&email=" . urlencode($email);
       return get_json_response($url);
@@ -115,7 +115,7 @@
   }
 
   function get_json_response($url) {
-    /* Pre: Path is an extension to personalize.towerdata.com
+    /* Pre: Path is an extension to api.towerdata.com
      * Note that an exception is raised if an HTTP response code
      * other than 200 is sent back. In this case, both the error code
      * the error code and error body are accessible from the exception raised
