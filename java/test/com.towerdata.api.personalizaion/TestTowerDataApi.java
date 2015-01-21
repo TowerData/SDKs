@@ -116,13 +116,18 @@ public class TestTowerDataApi {
     final List<Map<String,String>> list = new ArrayList<Map<String, String>>() {
       {
         add(new HashMap<String, String>(){
-            {
-            put("email", "jim@gmail.com");
+          {
+            put("email", "pete@rapleafdemo.com");
           }
         });
         add(new HashMap<String, String>(){
           {
-            put("email", "topdog@gmail.com");
+            put("first", "Peter");
+            put("last", "Schlick");
+            put("street", "112134 Leavenworth Rd.");
+            put("city", "San Francisco");
+            put("state", "CA");
+            put("zip", "94109");
           }
         });
         add(new HashMap<String, String>(){
