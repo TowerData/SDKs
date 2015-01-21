@@ -1,8 +1,8 @@
 ==================
-RAPLEAF DIRECT API
+TowerData API Bash SDK
 ==================
 
-Copyright 2010 Rapleaf
+Copyright 2014 TowerData
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -16,5 +16,7 @@ Copyright 2010 Rapleaf
    See the License for the specific language governing permissions and
    limitations under the License.
 
-For general information regarding the personalization API, visit http://www.rapleaf.com/developers/api_docs/personalization/direct. The personalization API's terms and conditions are stated at http://www.rapleaf.com/developers/api_usage.
+For documentation of the TowerData API, visit
+http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+
 

@@ -1,0 +1,13 @@
+*.gem
+*.rbc
+.bundle
+.config
+.yardoc
+*.py[co]
+__pycache__
+*.egg-info
+ruby/Gemfile.lock
+MANIFEST
+python/dist/
+python/build/
+

@@ -7,7 +7,7 @@ the provided e-mail (unknown fields are left blank)
 The hash returned from query_by_email is iterated through
 and each k/v pair is sent to std out """
   
-api_key = 'set api'         # Set your API key here
+api_key = 'YOUR_API_KEY'    # Set your API key here
 email = sys.argv[1]         # Command line argument
 api = TowerDataApi.TowerDataApi(api_key)   # Instance of the API class
 try:

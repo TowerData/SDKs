@@ -1,7 +1,9 @@
 require 'spec_helper'
 describe 'api_calls' do
+  API_KEY= ''
+  SIMPLE_API_KEY= ''
   it 'query without configuration' do
-    api = TowerDataApi::Api.new 'api key'
+    api = TowerDataApi::Api.new API_KEY
     value = api.query_by_email 'milboj@gmail.com'
     expect(value).to include('gender')
   end
@@ -10,7 +12,7 @@ describe 'api_calls' do
     before :each do
       # Api key must has eam and email_validation
       TowerDataApi::Configuration.begin do |config|
-        config.api_key = 'api key'
+        config.api_key = API_KEY
       end
       @api = TowerDataApi::Api.new  
     end
@@ -33,7 +35,7 @@ describe 'api_calls' do
 
     describe 'validation' do
       it 'valid email' do
-        validation = @api.get_email_validation 'milboj@gmail.com'
+        validation = @api.email_validation 'milboj@gmail.com'
         expect(validation.ok).to be true
         expect(validation.status_code).to be 50
         expect(validation.status).to eql 'valid'
@@ -41,7 +43,7 @@ describe 'api_calls' do
         expect(validation.valid?).to be true
       end
       it 'invalid email' do
-        validation = @api.get_email_validation 'milbojyu@yaho0.com'
+        validation = @api.email_validation 'milbojyu@yaho0.com'
         expect(validation.ok).to be false
         expect(validation.status_code).to be 315
         expect(validation.status).to eql 'invalid'
@@ -52,11 +54,13 @@ describe 'api_calls' do
       end
 
       it 'raise error if validation is not available' do
-        api =  TowerDataApi::Api.new 'simple_api' 
-        expect{ api.get_email_validation 'milbojyu@yaho0.com'}.to raise_error(TowerDataApi::Error::Api)
+        api =  TowerDataApi::Api.new SIMPLE_API_KEY 
+        expect{ api.email_validation 'milbojyu@yaho0.com'}.to raise_error(TowerDataApi::Error::Unsupported)
       end
 
       it 'valid_email? method' do
+        expect(@api.valid_email? 'milboj').to be false
+        expect(@api.valid_email? '').to be false
         expect(@api.valid_email? 'milboj@gmail.com').to be true
         expect(@api.valid_email? 'milboj@com').to be false
       end
