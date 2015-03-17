@@ -1,0 +1,10 @@
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\bin\Release\example.exe.config
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\bin\Release\example.exe
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\bin\Release\example.pdb
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\bin\Release\TowerDataApi.dll
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\bin\Release\TowerDataApi.pdb
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\obj\Release\example.csprojResolveAssemblyReference.cache
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\obj\Release\example.Properties.Resources.resources
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\obj\Release\example.csproj.GenerateResource.Cache
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\obj\Release\example.exe
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\obj\Release\example.pdb

@@ -1,0 +1,5 @@
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\personalization\personalization\bin\Release\TowerDataApi.dll
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\personalization\personalization\bin\Release\TowerDataApi.pdb
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\personalization\personalization\obj\Release\Personalization.csprojResolveAssemblyReference.cache
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\personalization\personalization\obj\Release\TowerDataApi.dll
+c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\personalization\personalization\obj\Release\TowerDataApi.pdb

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ReferencePath>c:\Users\Johnathan\Documents\Visual Studio 2013\Projects\example\example\..\..\personalization\personalization\bin\Release\</ReferencePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartArguments>e0bb77de280ecdff6355be0f3386089b kahmahoo%40yahoo.com eddie%40rapleaf.com</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartArguments>e0bb77de280ecdff6355be0f3386089b kahmahoo%40yahoo.com eddie%40rapleaf.com</StartArguments>
+  </PropertyGroup>
+</Project>

@@ -25,8 +25,8 @@ import java.util.Map;
 
 public class TowerDataApiExample {
   public static void main(String[] args) {
-    TowerDataApi api = (args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_API_KEY");
-    final String email = (args[1] != null) ? args[1]:"pete@rapleafdemo.com";
+    TowerDataApi api = (args.length >= 1 && args[0] != null) ? new TowerDataApi(args[0]):new TowerDataApi("YOUR_API_KEY");
+    final String email = (args.length >= 2 && args[1] != null) ? args[1]:"pete@rapleafdemo.com";
 
     // Query by email
     try {
