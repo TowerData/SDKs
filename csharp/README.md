@@ -10,11 +10,11 @@ Usage
 -----
 To run the sample solution, open a command prompt and cd to the bin directory of example. For instance,
 
-   cd <path-to-SDK>\csharp\example\example\bin
+      cd <path-to-SDK>\csharp\example\example\bin
 
 The usage syntax is as follows
 
-   example.exe <your API key> [sample email 1] [sample email 2] [sample email 3]
+      example.exe <your API key> [sample email 1] [sample email 2] [sample email 3]
 
 The only required parameter is a valid API key. You can also optionally enter up to three sample emails. When you
 hit enter, a series of queries will be run. The first query will use sample email 1 (or the default if not entered)
@@ -28,20 +28,19 @@ Recompiling
 A C# compiler is required if recompilation of either solution is necessary. This SDK was compiled with Microsoft
 Visual Studio Community 2013. If using Visual Studio Community 2013, from the Windows Start menu select
 
-   All Programs -> Visual Studio 2013 -> Visual Studio Tools
+      All Programs -> Visual Studio 2013 -> Visual Studio Tools
 
 This will open the Visual Studio Common Tools folder in Windows Explorer. Double click the shortcut
 
-   Developer Command Prompt for VS2013
+      Developer Command Prompt for VS2013
 
 In the command prompt that opens, cd to the directory containing the solution you want to recompile. For example,
 
-   cd <path-to-SDK>\csharp\personalization
+      cd <path-to-SDK>\csharp\personalization
 
 Clean and rebuild the solution with the following command
 
-   msbuild /p:Configuration=Release /p:Platform="Any CPU" /target:Rebuild
-
+      msbuild /p:Configuration=Release /p:Platform="Any CPU" /target:Rebuild
 
 License
 -------
