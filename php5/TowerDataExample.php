@@ -18,22 +18,36 @@
   namespace TowerData;
   include "TowerDataApi.php";
   
-  /* This example script takes an e-mail as a command line argument 
-   * and queries Rapleaf's database for any data associated with
-   * the provided e-mail (unknown fields are left blank) 
-   * The hash returned from query_by_email is iterated through
-   * and each k/v pair is sent to std out 
-   */
-   
-   $person = $argv[1];
-   $api = new TowerDataApi('api_key');
-   try {
-     $response = $api -> query_by_email($person, $hash_email = true);
-     foreach ($response as $key => $value) {
-      echo $key . " = " . $value . "\n";
-     }
-   } catch (\Exception $e) {
-     echo 'Caught exception: ' .  $e->getMessage() . "\n";
-   }
+ /* This example script can be run on the command line with e-mail
+  * as a command-line argument, or it can be run on a PHP server
+  * with "?email=<e-mail>" specified in the URL.
+  * It queries TowerData's database for any data associated with
+  * the provided e-mail (unknown fields are left blank) 
+  * The hash returned from query_by_email is iterated through
+  * and the resulting data structure is printed to STDOUT or to
+  * the browser.
+  */
+  if (defined('STDIN')) {
+    $person = $argv[1];
+  } else {
+    echo '<html><body>';
+    $person = $_GET['email'];
+  }
+  $api = new TowerDataApi('PUT YOUR API KEY HERE');
+  try {
+    $response = $api -> query_by_email($person, $hash_email = false);
+    if (defined('STDIN')) {
+      print_r($response);
+    } else {
+      echo '<pre>';
+      print_r($response);
+      echo '</pre><br>';
+    }
+  } catch (\Exception $e) {
+    echo 'Caught exception: ' .  $e->getMessage() . "\n";
+  }
 
+  if (defined('STDIN')) {
+    echo '</body></html>';
+  }
 ?>

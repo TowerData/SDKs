@@ -40,8 +40,8 @@
        * If the hash_email option is set, then the email will be hashed before it's sent to TowerData
        */
       if ($hash_email) {
-        $md5_email = sha1(strtolower($email));
-        return self::query_by_md5($sha1_email);
+        $md5_email = md5(strtolower($email));
+        return self::query_by_md5($md5_email);
       } else {
         $url = self::$BASE_PATH . self::$API_KEY . "&email=" . urlencode($email);
 
@@ -128,13 +128,12 @@
        * other than 200 is sent back. In this case, both the error code
        * the error code and error body are accessible from the exception raised
        */
-
       curl_setopt(self::$handle, CURLOPT_URL, $url);
       curl_setopt(self::$handle, CURLOPT_TIMEOUT, 2.0);
       $json_string = curl_exec(self::$handle);
       $response_code = curl_getinfo(self::$handle, CURLINFO_HTTP_CODE);
       if ($response_code < 200 || $response_code >= 300) {
-        throw new \Exception("Error Code: " . $response_code . "\nError Body: " . $json_string);
+        throw new \Exception("Curl Error: " .curl_error(self::$handle) . "\nError Code: " . $response_code . "\nError Body: " . $json_string);
       } else {
         $personalization = json_decode($json_string, TRUE);
         return $personalization;
