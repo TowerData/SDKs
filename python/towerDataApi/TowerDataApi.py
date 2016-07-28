@@ -56,12 +56,14 @@ class TowerDataApi:
         url = '%s&email=%s' % (self.base_path, quote(email))
         return self.__do_get_request(url)
 
-    def query_by_emails(self, emails):
+    def do_bulk_query(self, data):
         """
         Takes a list of e-mails and returns a hash with emails as keys and api information for each email
+        The data should be following form: [{'email': 'test@example.com'}, {'email': 'test1@example.com'}]
+        For more information refer to http://intelligence.towerdata.com/developers/personalization-api/bulk-personalization-api-documentation
         """
         url = self.base_path
-        return self.__do_post_request(emails)
+        return self.__do_post_request(data)
 
     def query_by_md5(self, md5_email):
         """
@@ -123,7 +125,6 @@ class TowerDataApi:
 
     def __do_post_request(self, data):
         """
-        Pre: Path is an extension to personalize.rapleaf.com
         Note that an exception is raised if an HTTP response code
         other than 200 is sent back. In this case, both the error code
         the error code and error body are accessible from the exception raised
