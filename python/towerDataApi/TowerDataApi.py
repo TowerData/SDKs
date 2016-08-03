@@ -21,16 +21,28 @@ from urllib3 import HTTPSConnectionPool # See README for download instructions
 import json
 import hashlib
 
+
+def http_response_to_json(data):
+    return json.JSONDecoder().decode(data)
+
+
 class TowerDataApi:
     
     HEADERS = {'User-Agent' : 'TowerDataApi/Python/1.2'}
+    POST_HEADERS = HEADERS.copy()
+    POST_HEADERS.update({
+        'Content-Type': 'application/json'
+    })
     BASE_PATH = '/v5/td'
+    BULK_BASE_PATH = '/v5/ei/bulk'
     HOST = 'api.towerdata.com'
     TIMEOUT = 2.0
     
     def __init__(self, api_key):
         self.handle = HTTPSConnectionPool(TowerDataApi.HOST, timeout=TowerDataApi.TIMEOUT)
         self.base_path = TowerDataApi.BASE_PATH + '?api_key=%s' % (api_key)
+        self.base_bulk_path = (TowerDataApi.BULK_BASE_PATH +
+                               '?api_key=%s' % (api_key))
     
     def query_by_email(self, email, hash_email=False ):
         """
@@ -42,15 +54,24 @@ class TowerDataApi:
             s.update(email.lower())
             return self.query_by_sha1(s.hexdigest())
         url = '%s&email=%s' % (self.base_path, quote(email))
-        return self.__get_json_response(url)
-    
+        return self.__do_get_request(url)
+
+    def do_bulk_query(self, data):
+        """
+        Takes a list of e-mails and returns a hash with emails as keys and api information for each email
+        The data should be following form: [{'email': 'test@example.com'}, {'email': 'test1@example.com'}]
+        For more information refer to http://intelligence.towerdata.com/developers/personalization-api/bulk-personalization-api-documentation
+        """
+        url = self.base_path
+        return self.__do_post_request(data)
+
     def query_by_md5(self, md5_email):
         """
         Takes an e-mail that has already been hashed by md5
         and returns a hash which maps attribute fields onto attributes.
         """
         url = '%s&md5_email=%s' % (self.base_path, quote(md5_email))
-        return self.__get_json_response(url)
+        return self.__do_get_request(url)
     
     def query_by_sha1(self, sha1_email):
         """
@@ -58,7 +79,7 @@ class TowerDataApi:
         and returns a hash which maps attribute fields onto attributes.
         """
         url = '%s&sha1_email=%s' % (self.base_path, quote(sha1_email))
-        return self.__get_json_response(url)
+        return self.__do_get_request(url)
         
     def query_by_nap(self, first, last, street, city, state, email=None):
         """
@@ -71,7 +92,7 @@ class TowerDataApi:
             quote(street), quote(city), quote(state))
         if email:
             url = '%s&email=%s' % (url, quote(email))
-        return self.__get_json_response(url)
+        return self.__do_get_request(url)
     
     def query_by_naz(self, first, last, zip4, email=None):
         """
@@ -84,9 +105,9 @@ class TowerDataApi:
             self.base_path, quote(first), quote(last), zip4)
         if email:
             url = '%s&email=%s' % (url, quote(email))
-        return self.__get_json_response(url)
-        
-    def __get_json_response(self, path):
+        return self.__do_get_request(url)
+
+    def __do_get_request(self, path):
         """
         Pre: Path is an extension to personalize.rapleaf.com
         Note that an exception is raised if an HTTP response code
@@ -96,8 +117,32 @@ class TowerDataApi:
         json_response = self.handle.request('GET', path, headers=TowerDataApi.HEADERS)
         if 200 <= json_response.status < 300:
             if json_response.data:
-                return json.JSONDecoder().decode(json_response.data)
+                return http_response_to_json(json_response.data)
             else:
                 return {}
         else:
             raise Exception(json_response.status, json_response.data.decode("utf-8"))
+
+    def __do_post_request(self, data):
+        """
+        Note that an exception is raised if an HTTP response code
+        other than 200 is sent back. In this case, both the error code
+        the error code and error body are accessible from the exception raised
+        """
+        json_response = self.handle.request(
+            'POST', self.base_bulk_path, headers=TowerDataApi.POST_HEADERS,
+            body=json.JSONEncoder().encode(data)
+        )
+        if 200 <= json_response.status < 300:
+            if json_response.data:
+                resp = http_response_to_json(json_response.data)
+                ret = {}
+                for i, tmp in enumerate(data):
+                    ret[tmp['email']] = resp[i]
+                return ret
+            else:
+                return {}
+        else:
+            raise Exception(
+                json_response.status, json_response.data.decode("utf-8")
+            )
