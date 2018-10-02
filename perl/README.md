@@ -2,7 +2,7 @@ TowerData Personalization API - Perl
 ====================================
 
 For documentation of TowerData's API, visit
-http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+http://docs.towerdata.com/
 
 Installation
 ------------

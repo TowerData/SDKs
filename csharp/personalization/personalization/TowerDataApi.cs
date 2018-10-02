@@ -26,8 +26,8 @@ using System.Security.Cryptography;
 namespace Personalization
 {
     /**
-     * For general information regarding the personalization API, 
-     * visit http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation. 
+     * For general information regarding the TowerData API, 
+     * visit http://docs.towerdata.com/. 
      */
     public class TowerDataApi
     {

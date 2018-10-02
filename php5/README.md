@@ -1,8 +1,8 @@
 TowerData Personalization API - PHP 5
 ==================
 
-For documentation of TowerData's personalization API, visit 
-http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+For documentation of the TowerData API, visit 
+http://docs.towerdata.com/
 
 The API is queried by calling any of the query functions belonging to the TowerDataApi file. An example script, TowerDataExample, is provided. The example script takes an email as a command line parameter, connects to the TowerData service, and returns (and sends to stdout) a collection of associated key-value pairs.
 

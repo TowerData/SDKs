@@ -4,7 +4,7 @@ Development kits and useful examples for obtaining data on email addresses
 and names and postal addresses using the TowerData Personalization API.
 
 For full documentation of TowerData's API, visit
-http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+http://docs.towerdata.com/
 
 Contributing
 ------------

@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  * For full documentation of the TowerData API visit
- * http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+ * http://docs.towerdata.com/
  * The personalization API's terms and conditions 
  * are stated at http://intelligence.towerdata.com/terms_and_conditions
  */

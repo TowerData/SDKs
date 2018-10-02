@@ -1,8 +1,8 @@
 TowerData Personalization API - Ruby
 ====================================
 
-For documentation of TowerData's personalization API, visit 
-http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+For documentation of the TowerData API, visit 
+http://docs.towerdata.com/
 
 How to Use
 ==========
