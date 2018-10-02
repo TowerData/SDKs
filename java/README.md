@@ -1,8 +1,8 @@
-TowerData Personalization API - Java
+TowerData API - Java
 ====================================
 
-For documentation of TowerData's personalization API, visit 
-http://intelligence.towerdata.com/developers/personalization-api/personalization-api-documentation
+For documentation of the TowerData API, visit 
+http://docs.towerdata.com/
 
 There are two API jars located in /java/build. The first one
 (towerdata-api-complete) bundles json.jar with the TowerData API.
