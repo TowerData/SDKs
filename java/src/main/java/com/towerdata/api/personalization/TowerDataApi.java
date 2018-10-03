@@ -1,6 +1,6 @@
 package com.towerdata.api.personalization;
 /*
- * Copyright 2014 TowerData
+ * Copyright 2018 TowerData
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ public class TowerDataApi {
   protected final static int DEFAULT_EMAIL_VALIDATION_TIMEOUT = 11000;
   protected final int timeout;
   protected final int bulkTimeout;
-  protected final int emailValidationTimeout;
   
   /**
    * Constructor for TowerDataApi class
@@ -67,14 +66,7 @@ public class TowerDataApi {
   public TowerDataApi(String apiKey, int timeout) {
     this(apiKey, timeout, DEFAULT_BULK_TIMEOUT);
   }
-
-  /**
-   * @see #TowerDataApi(String, int, int, int)
-   */
-  public TowerDataApi(String apiKey, int timeout, int bulkTimeout) {
-	  this(apiKey, timeout, bulkTimeout, DEFAULT_EMAIL_VALIDATION_TIMEOUT);
-  }
-
+  
   /**
    * Constructor for TowerDataApi class
    * Used to access query member functions
@@ -82,11 +74,37 @@ public class TowerDataApi {
    * @param timeout   Supplied integer (ms) overrides the default timeout
    * @param bulkTimeout   Supplied integer (ms) overrides the default bulk timeout
    */
-  public TowerDataApi(String apiKey, int timeout, int bulkTimeout, int emailValidationTimeout) {
+  public TowerDataApi(String apiKey, int timeout, int bulkTimeout) {
     this.apiKey = apiKey;
     this.timeout = timeout;
     this.bulkTimeout = bulkTimeout;
-    this.emailValidationTimeout = emailValidationTimeout;
+  }
+
+  /**
+   * @see #validateEmail(String, double)
+   */
+  public JSONObject validateEmail(String email) throws Exception {
+    return validateEmail(email, 0.0);
+  }
+
+  /**
+   * @param email           The email address to be validated (and optionally corrected)
+   * @param timeoutSeconds  Timeout value in seconds; max is 30 (seconds).
+   *                        Floating-point numbers (e.g. 4.9, 3.55) are permitted.
+   * @return                Returns a JSONObject with the response.
+   *                        See <a href="http://docs.towerdata.com/#response-overview">http://docs.towerdata.com/#response-overview</a> for details 
+   * @throws Exception      Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  public JSONObject validateEmail(String email, double timeoutSeconds) throws Exception {
+    String url = EMAIL_VALIDATION_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    int timeoutMillis;
+    if (timeoutSeconds > 0.0) {
+      timeoutMillis = (int)(timeoutSeconds * 1000) + 1000;
+      url += "&timeout=" + timeoutSeconds;
+    } else {
+      timeoutMillis = DEFAULT_EMAIL_VALIDATION_TIMEOUT;
+    }
+	return getJsonResponse(url, timeoutMillis);
   }
 
   /**
@@ -204,30 +222,6 @@ public class TowerDataApi {
   }
 
   /**
-   * @see #validateEmail(String, double)
-   */
-  public JSONObject validateEmail(String email) throws Exception {
-    return validateEmail(email, 0.0);
-  }
-
-  /**
-   * @param email           The email address to be validated (and optionally corrected)
-   * @param timeoutSeconds  Timeout value in seconds; max is 30 (seconds).
-   *                        Floating-point numbers (e.g. 4.9, 3.55) are permitted.
-   * @return                Returns a JSONObject with the response.
-   *                        See <a href="http://docs.towerdata.com/#response-overview">http://docs.towerdata.com/#response-overview</a> for details 
-   * @throws Exception      Throws error code on all HTTP statuses outside of 200 <= status < 300
-   */
-  public JSONObject validateEmail(String email, double timeoutSeconds) throws Exception {
-    String url = EMAIL_VALIDATION_URL
-    		+ "?email=" + URLEncoder.encode(email, "UTF-8")
-    		+ (timeoutSeconds > 0.0 ? "&timeout=" + timeoutSeconds : "")
-    		+ "&api_key=" + apiKey;
-    int timeoutMillis = Math.max(emailValidationTimeout, (int)(timeoutSeconds * 1000));
-	return getJsonResponse(url, timeoutMillis);
-  }
-
-  /**
    * @param set
    * @return            Returns a JSONArray of the responses
    * @throws Exception
@@ -266,17 +260,16 @@ public class TowerDataApi {
     
     return sb.toString();
   }
-
+  
   protected JSONObject getJsonResponse(String urlStr) throws Exception {
     return getJsonResponse(urlStr, timeout);
   }
 
   /**
-   * @param urlStr                   String email built in query with URLEncoded email
-   * @param connectionTimeoutMillis  Connection timeout in milliseconds
-   * @param readTimeoutMillis        Read timeout in milliseconds
-   * @return                         Returns a JSONObject hash from fields onto field values
-   * @throws Exception               Throws error code on all HTTP statuses outside of 200 <= status < 300
+   * @param urlStr         String email built in query with URLEncoded email
+   * @param timeoutMillis  Timeout in milliseconds
+   * @return               Returns a JSONObject hash from fields onto field values
+   * @throws Exception     Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
   protected JSONObject getJsonResponse(String urlStr, int timeoutMillis) throws Exception {
     URL url = new URL(urlStr);
