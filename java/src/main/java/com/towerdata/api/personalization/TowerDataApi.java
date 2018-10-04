@@ -41,21 +41,21 @@ public class TowerDataApi {
   protected final static String BULK_URL = "https://api.towerdata.com/v5/ei/bulk";
   protected final static String EMAIL_VALIDATION_URL = "https://api.towerdata.com/v5/ev";
   /**
-   * Default timeout in milliseconds to wait for a response from the API.
+   * Default client-side timeout in milliseconds to wait for a response from the API.
    * This default is overridden if a custom value is given in a constructor.
    * Functions bulkQuery() and validateEmail() do not use this default.
    */
   protected final static int DEFAULT_TIMEOUT = 2000;
   /**
-   * Default timeout in milliseconds to wait for a response from the API
+   * Default client-side timeout in milliseconds to wait for a response from the API
    * when calling bulkQuery().
    * This default is overridden if a custom value is given in a constructor.
    */
   protected final static int DEFAULT_BULK_TIMEOUT = 30000;
   /**
-   * Default timeout in milliseconds to wait for a response from the API
+   * Default client-side timeout in milliseconds to wait for a response from the API
    * when calling validateEmail().
-   * This default is overridden if a positive timeoutSeconds is given as parameter to validateEmail().
+   * This default is overridden if a positive server-side timeoutSeconds parameter is given to validateEmail().
    */
   protected final static int DEFAULT_EMAIL_VALIDATION_TIMEOUT = 11000;
   
@@ -105,8 +105,10 @@ public class TowerDataApi {
 
   /**
    * @param email           The email address to be validated (and optionally corrected)
-   * @param timeoutSeconds  Timeout value in seconds; max is 30 (seconds).
+   * @param timeoutSeconds  Server-side timeout value in seconds; max is 30 (seconds).
    *                        Floating-point numbers (e.g. 4.9, 3.55) are permitted.
+   *                        The client-side timeout is derived from this parameter if it is positive,
+   *                        DEFAULT_EMAIL_VALIDATION_TIMEOUT is used as client-side timeout otherwise.
    * @return                Returns a JSONObject with the response.
    *                        See <a href="http://docs.towerdata.com/#response-overview">http://docs.towerdata.com/#response-overview</a> for details 
    * @throws Exception      Throws error code on all HTTP statuses outside of 200 <= status < 300
