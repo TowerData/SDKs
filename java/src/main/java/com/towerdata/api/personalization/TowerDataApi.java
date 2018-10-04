@@ -40,9 +40,25 @@ public class TowerDataApi {
   protected final static String DIRECT_URL = "https://api.towerdata.com/v5/td";
   protected final static String BULK_URL = "https://api.towerdata.com/v5/ei/bulk";
   protected final static String EMAIL_VALIDATION_URL = "https://api.towerdata.com/v5/ev";
+  /**
+   * Default timeout in milliseconds to wait for a response from the API.
+   * This default is overridden if a custom value is given in a constructor.
+   * Functions bulkQuery() and validateEmail() do not use this default.
+   */
   protected final static int DEFAULT_TIMEOUT = 2000;
+  /**
+   * Default timeout in milliseconds to wait for a response from the API
+   * when calling bulkQuery().
+   * This default is overridden if a custom value is given in a constructor.
+   */
   protected final static int DEFAULT_BULK_TIMEOUT = 30000;
+  /**
+   * Default timeout in milliseconds to wait for a response from the API
+   * when calling validateEmail().
+   * This default is overridden if a positive timeoutSeconds is given as parameter to validateEmail().
+   */
   protected final static int DEFAULT_EMAIL_VALIDATION_TIMEOUT = 11000;
+  
   protected final int timeout;
   protected final int bulkTimeout;
   
@@ -267,7 +283,7 @@ public class TowerDataApi {
 
   /**
    * @param urlStr         String email built in query with URLEncoded email
-   * @param timeoutMillis  Timeout in milliseconds
+   * @param timeoutMillis  Timeout in milliseconds for calling the API
    * @return               Returns a JSONObject hash from fields onto field values
    * @throws Exception     Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
