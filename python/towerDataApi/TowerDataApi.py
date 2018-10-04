@@ -60,7 +60,7 @@ class TowerDataApi:
         """
         Takes a list of e-mails and returns a hash with emails as keys and api information for each email
         The data should be following form: [{'email': 'test@example.com'}, {'email': 'test1@example.com'}]
-        For more information refer to http://http://docs.towerdata.com/#bulk-intelligence-endpoint
+        For more information refer to http://docs.towerdata.com/#bulk-email-intelligence-introduction
         """
         url = self.base_path
         return self.__do_post_request(data)
