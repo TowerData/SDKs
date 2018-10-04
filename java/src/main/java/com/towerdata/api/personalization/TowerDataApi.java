@@ -1,6 +1,6 @@
 package com.towerdata.api.personalization;
 /*
- * Copyright 2014 TowerData
+ * Copyright 2018 TowerData
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,8 +39,26 @@ public class TowerDataApi {
   protected String apiKey;
   protected final static String DIRECT_URL = "https://api.towerdata.com/v5/td";
   protected final static String BULK_URL = "https://api.towerdata.com/v5/ei/bulk";
+  protected final static String EMAIL_VALIDATION_URL = "https://api.towerdata.com/v5/ev";
+  /**
+   * Default client-side timeout in milliseconds to wait for a response from the API.
+   * This default is overridden if a custom value is given in a constructor.
+   * Functions bulkQuery() and validateEmail() do not use this default.
+   */
   protected final static int DEFAULT_TIMEOUT = 2000;
+  /**
+   * Default client-side timeout in milliseconds to wait for a response from the API
+   * when calling bulkQuery().
+   * This default is overridden if a custom value is given in a constructor.
+   */
   protected final static int DEFAULT_BULK_TIMEOUT = 30000;
+  /**
+   * Default client-side timeout in milliseconds to wait for a response from the API
+   * when calling validateEmail().
+   * This default is overridden if a positive server-side timeoutSeconds parameter is given to validateEmail().
+   */
+  protected final static int DEFAULT_EMAIL_VALIDATION_TIMEOUT = 11000;
+  
   protected final int timeout;
   protected final int bulkTimeout;
   
@@ -76,6 +94,35 @@ public class TowerDataApi {
     this.apiKey = apiKey;
     this.timeout = timeout;
     this.bulkTimeout = bulkTimeout;
+  }
+
+  /**
+   * @see #validateEmail(String, double)
+   */
+  public JSONObject validateEmail(String email) throws Exception {
+    return validateEmail(email, 0.0);
+  }
+
+  /**
+   * @param email           The email address to be validated (and optionally corrected)
+   * @param timeoutSeconds  Server-side timeout value in seconds; max is 30 (seconds).
+   *                        Floating-point numbers (e.g. 4.9, 3.55) are permitted.
+   *                        The client-side timeout is derived from this parameter if it is positive,
+   *                        DEFAULT_EMAIL_VALIDATION_TIMEOUT is used as client-side timeout otherwise.
+   * @return                Returns a JSONObject with the response.
+   *                        See <a href="http://docs.towerdata.com/#response-overview">http://docs.towerdata.com/#response-overview</a> for details 
+   * @throws Exception      Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  public JSONObject validateEmail(String email, double timeoutSeconds) throws Exception {
+    String url = EMAIL_VALIDATION_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    int timeoutMillis;
+    if (timeoutSeconds > 0.0) {
+      timeoutMillis = (int)(timeoutSeconds * 1000) + 1000;
+      url += "&timeout=" + timeoutSeconds;
+    } else {
+      timeoutMillis = DEFAULT_EMAIL_VALIDATION_TIMEOUT;
+    }
+	return getJsonResponse(url, timeoutMillis);
   }
 
   /**
@@ -232,17 +279,22 @@ public class TowerDataApi {
     return sb.toString();
   }
   
-  /**
-   * @param urlStr      String email built in query with URLEncoded email
-   * @return            Returns a JSONObject hash from fields onto field values
-   * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
-   */
   protected JSONObject getJsonResponse(String urlStr) throws Exception {
+    return getJsonResponse(urlStr, timeout);
+  }
+
+  /**
+   * @param urlStr         String email built in query with URLEncoded email
+   * @param timeoutMillis  Timeout in milliseconds for calling the API
+   * @return               Returns a JSONObject hash from fields onto field values
+   * @throws Exception     Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  protected JSONObject getJsonResponse(String urlStr, int timeoutMillis) throws Exception {
     URL url = new URL(urlStr);
     HttpURLConnection handle = (HttpURLConnection) url.openConnection();
     handle.setRequestProperty("User-Agent", getUserAgent());
-    handle.setConnectTimeout(timeout);
-    handle.setReadTimeout(timeout);
+    handle.setConnectTimeout(timeoutMillis);
+    handle.setReadTimeout(timeoutMillis);
     BufferedReader in = new BufferedReader(new InputStreamReader(handle.getInputStream()));
     String responseBody = in.readLine();
     in.close();

@@ -27,6 +27,12 @@ Query Options
 -------------
 The SDK supports several ways to query TowerData's API: email, hashed email (either MD5 or SHA1 hash), name and postal (NAP), or name and ZIP+4 (NAZ).
 
+### validateEmail(String email, double timeoutSeconds)
+
+This method queries TowerData's Email Validation API with the specified email.
+The second parameter is the timeout in seconds; the API's default value is used if timeoutSeconds is not positive.
+
+
 ### queryByEmail(String email, boolean hash_email)
 
 This method queries TowerData's API with the specified email. If the second parameter is set to true, the email address will be hashed to an MD5 before querying TowerData's API with it. Defaults to false.

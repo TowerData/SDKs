@@ -10,4 +10,4 @@ ruby/Gemfile.lock
 MANIFEST
 python/dist/
 python/build/
-
+/.project
