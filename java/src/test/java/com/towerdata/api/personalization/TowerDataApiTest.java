@@ -19,6 +19,7 @@ import org.junit.Test;
 public class TowerDataApiTest {
 	private static TowerDataApi tdApi;
 	private static TowerDataApi evApi;
+	private static TowerDataApi eppendApi;
 
 	@BeforeClass
 	public static void setupBeforeClass() throws IOException {
@@ -28,10 +29,13 @@ public class TowerDataApiTest {
 		}
 		String tdApiKey = properties.getProperty("td.api.key");
 		String evApiKey = properties.getProperty("ev.api.key");
+		String eppendApiKey = properties.getProperty("eppend.api.key");
 		if (!populated(tdApiKey)) throw new IllegalStateException("td.api.key not set in test.properties");
 		if (!populated(evApiKey)) throw new IllegalStateException("ev.api.key not set in test.properties");
+		if (!populated(eppendApiKey)) throw new IllegalStateException("eppend.api.key not set in test.properties");
 		tdApi = new TowerDataApi(tdApiKey);
 		evApi = new TowerDataApi(evApiKey);
+		eppendApi = new TowerDataApi(eppendApiKey);
 	}
 
 	@Test
@@ -89,7 +93,20 @@ public class TowerDataApiTest {
 		assertNotNull(response);
 		assertTrue(response.toString().startsWith("[{") && response.toString().endsWith("}]"));
 	}
-	
+
+	@Test
+	public void appendEmail() throws Exception {
+		String first = "TOWER";
+		String last = "DATA";
+		String street = "33 Irving Place 3rd Floor, Suite 4048";
+		String city = "NEW YORK";
+		String state = "NY";
+		String zip = "10003";
+		JSONObject response = eppendApi.appendEmail(first, last, street, city, state, zip);
+		System.out.println("Append email:\n" + response);
+		assertResponse(response);
+	}
+
 	private static void assertResponse(JSONObject response) {
 		assertNotNull(response);
 		String responseString = response.toString();
