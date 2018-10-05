@@ -54,9 +54,13 @@ This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a s
 
 Queries the TowerData API with an HashMap of emails or names and postal addresses and returns a JSONarray containing information on each input identifier.
 
+### appendEmail(String first, String last, String street, String city, String state, String zip)
+
+This method queries TowerData's Email Append API with the specified name and postal address.
+
 License
 -------
-Copyright 2014 TowerData
+Copyright 2018 TowerData
 
 * The TowerData Personalization API has separate terms and conditions, which can
   be found at http://intelligence.towerdata.com/terms_and_conditions
