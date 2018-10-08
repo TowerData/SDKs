@@ -90,11 +90,6 @@ License
 Copyright 2018 TowerData
 
 * The TowerData Personalization API has separate terms and conditions, which can
-License
--------
-Copyright 2018 TowerData
-
-* The TowerData Personalization API has separate terms and conditions, which can
   be found at http://intelligence.towerdata.com/terms_and_conditions
 * If you send us code, please keep in mind that it will be distributed under
   the same license as the rest of the project.
