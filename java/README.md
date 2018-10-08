@@ -36,7 +36,7 @@ Your API key will be initially configured for Email Validation and several
 demographic fields from our Email Intelligence service. 
 
 TowerData API keys with Email Validation must use the [validation
-api endpoint](http://docs.towerdata.com/#validation-api-endpoint)
+api endpoint](http://docs.towerdata.com/#validation-api-endpoint).
 
 Because of this, use the validateEmail method described below for
 your initial tests. [Contact us](https://www.towerdata.com/contact-towerdata)
@@ -52,13 +52,13 @@ The SDK supports several ways to query TowerData's APIs.
 This method queries TowerData's Email Validation API with the specified email.
 The second parameter is the timeout in seconds; the API's default value is used if timeoutSeconds is not positive.
 
-If your API key is configured for demographic fields, they will be returned if the email is valid.
+If your API key is configured for demographic fields, they will be included in the response if the email is valid.
 
 ### queryByEmail(String email, boolean hash_email)
 
 This method queries TowerData's Email Intelligence API with the specified email. If the second parameter is set to true, the email address will be hashed to an MD5 before querying the API with it. Defaults to false.
 
-This method will not work if your API key is configured for Email Validation. The validateEmail method should be used in that case.
+This method will not work if your API key includes Email Validation. The validateEmail() method should be used in that case.
 
 ### queryByMd5(String md5Email)
 ### queryBySha1(String sha1Email)
@@ -75,11 +75,11 @@ This method queries TowerData's Email Intelligence API with a name and ZIP+4 cod
 
 ### bulkQuery(set)
 
-Queries the TowerData Email Intelligence API with an HashMap of emails or names and postal addresses and returns a JSONarray containing information on each input identifier.
+Queries the TowerData [Bulk Email Intelligence API](http://docs.towerdata.com/#bulk-email-intelligence-introduction) with an HashMap of emails or names and postal addresses and returns a JSONarray containing information on each input identifier.
 
 ### appendEmail(String first, String last, String street, String city, String state, String zip)
 
-This method queries TowerData's Email Append API with the specified name and postal address.
+This method uses TowerData's Contact Append API to [append an email address](http://docs.towerdata.com/#email-append) to the specified name and postal address.
 
 License
 -------
