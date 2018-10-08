@@ -273,6 +273,17 @@ public class TowerDataApi {
     return getJsonResponse(url);
   }
 
+  /**
+   * @param email       Email
+   * @return            Returns a JSONObject associated with the parameter(s).
+   *                    See <a href="http://docs.towerdata.com/#postal-append">http://docs.towerdata.com/#postal-append</a> for details.
+   * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  public JSONObject appendPostal(String email) throws Exception {
+    String url  = EPPEND_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    return getJsonResponse(url);
+  }
+
   protected String bulkJsonResponse(String urlStr, String list) throws Exception {
     URL url = new URL(urlStr);
     HttpURLConnection handle = (HttpURLConnection) url.openConnection();
