@@ -26,12 +26,12 @@ import org.json.JSONObject;
 public class TowerDataApiExample {
 	public static void main(String[] args) {
 		TowerDataApi api = (args.length >= 1 && args[0] != null) ? new TowerDataApi(args[0]) : new TowerDataApi("YOUR_API_KEY");
-		String email = (args.length >= 2 && args[1] != null) ? args[1] : "pete@rapleafdemo.com";
+		String email = (args.length >= 2 && args[1] != null) ? args[1] : "demo@towerdata.com";
 
-		// Query by email
+		// Validate Email
 		try {
-			JSONObject response = api.queryByEmail(email, false);
-			System.out.println("Query by email:\n" + response);
+			JSONObject response = api.validateEmail(email);
+			System.out.println("Validate email:\n" + response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,8 +39,8 @@ public class TowerDataApiExample {
 		// Bulk Query
 		List<Map<String, String>> list = new ArrayList<>();
 		list.add(element(email, "", "", "", "", "", ""));
-		list.add(element("pete@rapleafdemo.com", "", "", "", "", "", ""));
-		list.add(element("", "Peter", "Schlick", "112134 Leavenworth Rd.", "San Francisco", "CA", "21044"));
+		list.add(element("demo@towerdata.com", "", "", "", "", "", ""));
+		list.add(element("", "Tower", "Data", "33 Irving Place 3rd Floor, Suite 4048", "New York", "NY", "10003"));
 
 		try {
 			JSONArray response = api.bulkQuery(list);

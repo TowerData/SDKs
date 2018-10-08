@@ -40,6 +40,7 @@ public class TowerDataApi {
   protected final static String DIRECT_URL = "https://api.towerdata.com/v5/td";
   protected final static String BULK_URL = "https://api.towerdata.com/v5/ei/bulk";
   protected final static String EMAIL_VALIDATION_URL = "https://api.towerdata.com/v5/ev";
+  protected final static String EPPEND_URL = "https://api.towerdata.com/v5/eppend";
   /**
    * Default client-side timeout in milliseconds to wait for a response from the API.
    * This default is overridden if a custom value is given in a constructor.
@@ -247,6 +248,40 @@ public class TowerDataApi {
   public JSONArray bulkQuery(List<Map<String,String>> set) throws Exception {
     String urlStr = BULK_URL + "?api_key=" + apiKey;
     return new JSONArray(bulkJsonResponse(urlStr, new JSONArray(set).toString()));
+  }
+
+  /**
+   * @param first       First name
+   * @param last        Last name
+   * @param street      Street address
+   * @param city        City name
+   * @param state       State initials
+   * @param zip         Zipcode
+   * @return            Returns a JSONObject associated with the parameter(s).
+   *                    See <a href="http://docs.towerdata.com/#email-append">http://docs.towerdata.com/#email-append</a> for details.
+   * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  public JSONObject appendEmail(String first, String last, String street, String city, String state, String zip) throws Exception {
+    String url  = EPPEND_URL
+    		+ "?first=" + URLEncoder.encode(first, "UTF-8")
+    		+ "&last=" + URLEncoder.encode(last, "UTF-8")
+    		+ "&street=" + URLEncoder.encode(street, "UTF-8")
+    		+ "&city=" + URLEncoder.encode(city, "UTF-8")
+    		+ "&state=" + URLEncoder.encode(state, "UTF-8")
+    		+ "&zip=" + URLEncoder.encode(zip, "UTF-8")
+    		+ "&api_key=" + apiKey;
+    return getJsonResponse(url);
+  }
+
+  /**
+   * @param email       Email
+   * @return            Returns a JSONObject associated with the parameter(s).
+   *                    See <a href="http://docs.towerdata.com/#postal-append">http://docs.towerdata.com/#postal-append</a> for details.
+   * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
+   */
+  public JSONObject appendPostal(String email) throws Exception {
+    String url  = EPPEND_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    return getJsonResponse(url);
   }
 
   protected String bulkJsonResponse(String urlStr, String list) throws Exception {
