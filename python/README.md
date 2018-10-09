@@ -24,10 +24,21 @@ Query Options
 -------------
 The egg supports several ways to query TowerData's API: email, hashed email (either MD5 or SHA1 hash), name and postal (NAP), or name and ZIP+4 (NAZ).
 
-### query_by_email(self, email, hash_email = False)
+### validate_email(self, email, timeout = None)
+
+This method queries TowerData's [Email Validation API](http://docs.towerdata.com/#email-validation-introduction) with the specified email.
+The timeout option is the server-side timeout value in seconds; floating-point numbers (e.g. 4.9, 3.55) are permitted; max is 30 (seconds).
+If timeout is set, the server-side timeout is set to this value, otherwise, the default server-side timeout is used.
+
+If your API key is configured for demographic fields, they will be included in the response if the email is valid.
+
+### query_by_email(self, email, hash_email = False, fields = None)
 
 This method queries TowerData's API with the specified email. 
 If the hash_email option is set, then the email will be hashed before it's sent to TowerData.
+If the fields option is set, then this comma-separated list specifies the data fields you want returned.
+If your API key is configured for multiple data fields, you can specify which ones you want returned.
+You will only be charged for the data you receive.
 
 ### query_by_md5(self, md5_email)
 ### query_by_sha1(self, sha1_email)
@@ -74,7 +85,7 @@ License
   the same license as the rest of the project.
 * This code is licensed under the Apache License which follows...
 
-Copyright 2014 TowerData
+Copyright 2018 TowerData
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

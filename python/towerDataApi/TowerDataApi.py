@@ -1,4 +1,4 @@
-# Copyright 2014 TowerData
+# Copyright 2018 TowerData
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -34,51 +34,91 @@ class TowerDataApi:
         'Content-Type': 'application/json'
     })
     BASE_PATH = '/v5/td'
+    EV_BASE_PATH = '/v5/ev'
+    EPPEND_BASE_PATH = '/v5/eppend'
     BULK_BASE_PATH = '/v5/ei/bulk'
     HOST = 'api.towerdata.com'
-    TIMEOUT = 2.0
+    TIMEOUT = 30.0
     
     def __init__(self, api_key):
         self.handle = HTTPSConnectionPool(TowerDataApi.HOST, timeout=TowerDataApi.TIMEOUT)
         self.base_path = TowerDataApi.BASE_PATH + '?api_key=%s' % (api_key)
+        self.base_ev_path = TowerDataApi.EV_BASE_PATH + '?api_key=%s' % (api_key)
+        self.base_eppend_path = TowerDataApi.EPPEND_BASE_PATH + '?api_key=%s' % (api_key)
         self.base_bulk_path = (TowerDataApi.BULK_BASE_PATH +
                                '?api_key=%s' % (api_key))
+
+    def validate_email(self, email, timeout=None):
+        """
+        Takes an e-mail and returns a map of validation attributes.
+        The timeout option is the server-side timeout value in seconds; floating-point numbers (e.g. 4.9, 3.55) are permitted; max is 30 (seconds).
+        If timeout is set, it overrides the default server-side timeout.
+        """
+        if timeout:
+            url = '%s&email=%s&timeout=%.1f' % (self.base_ev_path, quote(email), timeout)
+        else:
+            url = '%s&email=%s' % (self.base_ev_path, quote(email))
+        return self.__do_get_request(url)
     
-    def query_by_email(self, email, hash_email=False ):
+    def query_by_email(self, email, hash_email=False, fields=None):
         """
         Takes an e-mail and returns a hash which maps attribute fields onto attributes
         If the hash_email option is set, then the email will be hashed before it's sent to TowerData.
+        If the fields parameter is set, this comma-separated string specifies the attributes you want returned,
+        otherwise, all the attributes configured in your API key are returned.
+        You will only be charged for the data you receive.
         """
         if hash_email:
             s = hashlib.sha1()
             s.update(email.lower())
-            return self.query_by_sha1(s.hexdigest())
-        url = '%s&email=%s' % (self.base_path, quote(email))
+            return self.query_by_sha1(s.hexdigest(), fields)
+        if fields:
+            url = '%s&email=%s&fields=%s' % (self.base_path, quote(email), quote(fields))
+        else:
+            url = '%s&email=%s' % (self.base_path, quote(email))
         return self.__do_get_request(url)
 
-    def do_bulk_query(self, data):
+    def do_bulk_query(self, data, fields=None):
         """
         Takes a list of e-mails and returns a hash with emails as keys and api information for each email
         The data should be following form: [{'email': 'test@example.com'}, {'email': 'test1@example.com'}]
+        If the fields parameter is set, this comma-separated string specifies the attributes you want returned,
+        otherwise, all the attributes configured in your API key are returned.
+        You will only be charged for the data you receive.
         For more information refer to http://docs.towerdata.com/#bulk-email-intelligence-introduction
         """
-        url = self.base_path
+        if fields:
+            url = '%s&fields=%s' % (self.base_path,  quote(fields))
+        else:
+            url = self.base_path
         return self.__do_post_request(data)
 
-    def query_by_md5(self, md5_email):
+    def query_by_md5(self, md5_email, fields=None):
         """
         Takes an e-mail that has already been hashed by md5
         and returns a hash which maps attribute fields onto attributes.
+        If the fields parameter is set, this comma-separated string specifies the attributes you want returned,
+        otherwise, all the attributes configured in your API key are returned.
+        You will only be charged for the data you receive.
         """
-        url = '%s&md5_email=%s' % (self.base_path, quote(md5_email))
+        if fields:
+            url = '%s&md5_email=%s&fields=%s' % (self.base_path, quote(md5_email), quote(fields))
+        else:
+            url = '%s&md5_email=%s' % (self.base_path, quote(md5_email))
         return self.__do_get_request(url)
     
-    def query_by_sha1(self, sha1_email):
+    def query_by_sha1(self, sha1_email, fields=None):
         """
         Takes an e-mail that has already been hashed by sha1
         and returns a hash which maps attribute fields onto attributes.
+        If the fields parameter is set, this comma-separated string specifies the attributes you want returned,
+        otherwise, all the attributes configured in your API key are returned.
+        You will only be charged for the data you receive.
         """
-        url = '%s&sha1_email=%s' % (self.base_path, quote(sha1_email))
+        if fields:
+            url = '%s&sha1_email=%s' % (self.base_path, quote(sha1_email))
+        else:
+            url = '%s&sha1_email=%s&fields=%s' % (self.base_path, quote(sha1_email), quote(fields))
         return self.__do_get_request(url)
         
     def query_by_nap(self, first, last, street, city, state, email=None):
@@ -105,6 +145,23 @@ class TowerDataApi:
             self.base_path, quote(first), quote(last), zip4)
         if email:
             url = '%s&email=%s' % (url, quote(email))
+        return self.__do_get_request(url)
+
+    def append_email(self, first, last, street, city, state, zip):
+        """
+        Takes first name, last name, and postal (street, city, state acronym, and zip),
+        and returns a hash which maps attribute fields onto attributes
+        """
+        url = '%s&first=%s&last=%s&street=%s&city=%s&state=%s&zip=%s' % (
+            self.base_eppend_path, quote(first), quote(last),
+            quote(street), quote(city), quote(state), quote(zip))
+        return self.__do_get_request(url)
+
+    def append_postal(self, email):
+        """
+        Takes email and returns a hash with first name, last name, and postal (street, city, state acronym, and zip) attributes.
+        """
+        url = '%s&email=%s' % (self.base_eppend_path, quote(email))
         return self.__do_get_request(url)
 
     def __do_get_request(self, path):

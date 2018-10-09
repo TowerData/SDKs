@@ -1,4 +1,4 @@
-import TowerDataApi
+from towerDataApi import TowerDataApi
 import sys
 
 """ This example script takes an e-mail as a command line argument 
@@ -6,12 +6,13 @@ and queries TowerData's database for any data associated with
 the provided e-mail (unknown fields are left blank) 
 The hash returned from query_by_email is iterated through
 and each k/v pair is sent to std out """
-  
+
 api_key = 'YOUR_API_KEY'    # Set your API key here
 email = sys.argv[1]         # Command line argument
+fields = 'age,gender,household_income,home_owner_status,marital_status'
 api = TowerDataApi.TowerDataApi(api_key)   # Instance of the API class
 try:
-    response = api.query_by_email(email)
+    response = api.query_by_email(email, fields)
     for k, v in response.iteritems():
         print('%s = %s' % (k, v))
 except Exception as inst:       # HTTP code returned other than 200
