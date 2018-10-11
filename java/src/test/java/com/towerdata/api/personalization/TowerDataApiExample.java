@@ -25,44 +25,77 @@ import org.json.JSONObject;
 
 public class TowerDataApiExample {
 	public static void main(String[] args) {
-		TowerDataApi api = (args.length >= 1 && args[0] != null) ? new TowerDataApi(args[0]) : new TowerDataApi("YOUR_API_KEY");
-		String email = (args.length >= 2 && args[1] != null) ? args[1] : "demo@towerdata.com";
+		// Set your API key(s) here
+		String validationApiKey = "";
+		String intelligenceApiKey = "";
 
-		// Validate Email
-		try {
-			JSONObject response = api.validateEmail(email);
-			System.out.println("Validate email:\n" + response);
-		} catch (Exception e) {
-			e.printStackTrace();
+		// Email Validation
+		if (!validationApiKey.isEmpty()) {
+			TowerDataApi api = new TowerDataApi(validationApiKey);
+	
+			// valid
+			String email = "info@towerdata.com";
+			try {
+				JSONObject response = api.validateEmail(email);
+				System.out.println("\nValidate email:\n" + response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	
+			// invalid with correction
+			email = "info@@towerdata,com";
+			try {
+				JSONObject response = api.validateEmail(email);
+				System.out.println("\nValidate email:\n" + response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
-		// Bulk Query
-		List<Map<String, String>> list = new ArrayList<>();
-		list.add(element(email, "", "", "", "", "", ""));
-		list.add(element("demo@towerdata.com", "", "", "", "", "", ""));
-		list.add(element("", "Tower", "Data", "33 Irving Place 3rd Floor, Suite 4048", "New York", "NY", "10003"));
+		// Email Intelligence
+		if (!intelligenceApiKey.isEmpty()) {
+			TowerDataApi api = new TowerDataApi(intelligenceApiKey);
 
-		try {
-			JSONArray response = api.bulkQuery(list);
-			System.out.println("\nBulk Query:\n" + response);
-		} catch (Exception e) {
-			e.printStackTrace();
+			// Query by email - return all fields
+			String email = "info@towerdata.com";
+			try {
+				JSONObject response = api.queryByEmail(email);
+				System.out.println("\nQuery by email - all fields:\n" + response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// Query by email - limit fields
+			String fields = "age,gender,household_income,home_owner_status,marital_status";
+			try {
+				JSONObject response = api.queryByEmail(email, fields);
+				System.out.println("\nQuery by email - limit fields:\n" + response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// Bulk Query
+			List<Map<String, String>> list = new ArrayList<>();
+	
+			Map<String, String> map1 = new HashMap<>();
+			map1.put("email", "info@towerdata.com");
+			list.add(map1);
+	
+			Map<String, String> map2 = new HashMap<>();
+			map2.put("first", "Tower");
+			map2.put("last", "Data");
+			map2.put("street", "33 Irving Place 3rd Floor, Suite 4048");
+			map2.put("city", "New York");
+			map2.put("state", "NY");
+			map2.put("zip", "10003");
+			list.add(map2);
+	
+			try {
+				JSONArray response = api.bulkQuery(list);
+				System.out.println("\nBulk Query:\n" + response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	}
-
-	private static Map<String, String> element(String email, String first, String last, String street, String city, String state, String zip) {
-		Map<String, String> map = new HashMap<>();
-		if (populated(email)) map.put("email", email);
-		if (populated(first)) map.put("first", email);
-		if (populated(last)) map.put("last", last);
-		if (populated(street)) map.put("street", street);
-		if (populated(city)) map.put("city", city);
-		if (populated(state)) map.put("state", state);
-		if (populated(zip)) map.put("zip", zip);
-		return map;
-	}
-
-	private static boolean populated(String s) {
-		return s != null && !s.isEmpty();
 	}
 }

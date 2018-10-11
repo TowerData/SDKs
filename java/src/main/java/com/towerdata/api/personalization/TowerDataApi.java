@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -115,7 +116,7 @@ public class TowerDataApi {
    * @throws Exception      Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
   public JSONObject validateEmail(String email, double timeoutSeconds) throws Exception {
-    String url = EMAIL_VALIDATION_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    String url = EMAIL_VALIDATION_URL + "?email=" + utf8Encode(email) + "&api_key=" + apiKey;
     int timeoutMillis;
     if (timeoutSeconds > 0.0) {
       timeoutMillis = (int)(timeoutSeconds * 1000) + 1000;
@@ -136,6 +137,20 @@ public class TowerDataApi {
   }
 
   /**
+   * @param email       String email for query.
+   * @param fields      A comma-separated list of the data fields you want returned.
+   *                    If your API key is configured for multiple data fields,
+   *                    you can specify which ones you want returned.
+   *                    You will only be charged for the data you receive.
+   * @return            Returns a JSONObject associated with the parameter(s).
+   * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300.
+   */
+  public JSONObject queryByEmail(String email, String fields) throws Exception {
+      String url = DIRECT_URL + "?email=" + utf8Encode(email) + "&fields=" + utf8Encode(fields) + "&api_key=" + apiKey;
+      return getJsonResponse(url);
+  }
+
+  /**
    * @param email       String email for query
    * @param hash_email  If true, md5 hash the email before sending
    * @return            Returns a JSONObject associated with the parameter(s)
@@ -145,7 +160,7 @@ public class TowerDataApi {
     if (hash_email) {
       return queryByMd5(MD5Hex(email.toLowerCase()));
     } else {
-      String url = DIRECT_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+      String url = DIRECT_URL + "?email=" + utf8Encode(email) + "&api_key=" + apiKey;
       return getJsonResponse(url);
     }
   }
@@ -156,7 +171,7 @@ public class TowerDataApi {
    * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
   public JSONObject queryByMd5(String md5Email) throws Exception {
-    String url = DIRECT_URL + "?md5_email=" + URLEncoder.encode(md5Email, "UTF-8") + "&api_key=" + apiKey;
+    String url = DIRECT_URL + "?md5_email=" + utf8Encode(md5Email) + "&api_key=" + apiKey;
     return getJsonResponse(url);
   }
 
@@ -166,7 +181,7 @@ public class TowerDataApi {
    * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
   public JSONObject queryBySha1(String sha1Email) throws Exception {
-    String url = DIRECT_URL + "?sha1_email=" + URLEncoder.encode(sha1Email, "UTF-8") + "&api_key=" + apiKey;
+    String url = DIRECT_URL + "?sha1_email=" + utf8Encode(sha1Email) + "&api_key=" + apiKey;
     return getJsonResponse(url);
   }
 
@@ -196,14 +211,14 @@ public class TowerDataApi {
   public JSONObject queryByNap(String first, String last, String street, String city, String state, String email) throws Exception {
     String url;
     if (email != null) {
-      url = DIRECT_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey +
-      "&first=" + URLEncoder.encode(first, "UTF-8") + "&last=" + URLEncoder.encode(last, "UTF-8") +
-      "&street=" + URLEncoder.encode(street, "UTF-8") + "&city=" + URLEncoder.encode(city, "UTF-8") +
-      "&state=" + URLEncoder.encode(state, "UTF-8");
+      url = DIRECT_URL + "?email=" + utf8Encode(email) + "&api_key=" + apiKey +
+      "&first=" + utf8Encode(first) + "&last=" + utf8Encode(last) +
+      "&street=" + utf8Encode(street) + "&city=" + utf8Encode(city) +
+      "&state=" + utf8Encode(state);
     } else {
-      url = DIRECT_URL + "?api_key=" + apiKey + "&state=" + URLEncoder.encode(state, "UTF-8") +
-      "&first=" + URLEncoder.encode(first, "UTF-8") + "&last=" + URLEncoder.encode(last, "UTF-8") +
-      "&street=" + URLEncoder.encode(street, "UTF-8") + "&city=" + URLEncoder.encode(city, "UTF-8");
+      url = DIRECT_URL + "?api_key=" + apiKey + "&state=" + utf8Encode(state) +
+      "&first=" + utf8Encode(first) + "&last=" + utf8Encode(last) +
+      "&street=" + utf8Encode(street) + "&city=" + utf8Encode(city);
     }
     return getJsonResponse(url);
   }
@@ -230,12 +245,12 @@ public class TowerDataApi {
   public JSONObject queryByNaz(String first, String last, String zip4, String email) throws Exception {
     String url;
     if (email != null) {
-      url = DIRECT_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey +
-      "&first=" + URLEncoder.encode(first, "UTF-8") + "&last=" + URLEncoder.encode(last, "UTF-8") +
+      url = DIRECT_URL + "?email=" + utf8Encode(email) + "&api_key=" + apiKey +
+      "&first=" + utf8Encode(first) + "&last=" + utf8Encode(last) +
       "&zip4=" + zip4;
     } else {
       url = DIRECT_URL + "?api_key=" + apiKey + "&zip4=" + zip4 +
-      "&first=" + URLEncoder.encode(first, "UTF-8") + "&last=" + URLEncoder.encode(last, "UTF-8");
+      "&first=" + utf8Encode(first) + "&last=" + utf8Encode(last);
     }
     return getJsonResponse(url);
   }
@@ -263,12 +278,12 @@ public class TowerDataApi {
    */
   public JSONObject appendEmail(String first, String last, String street, String city, String state, String zip) throws Exception {
     String url  = EPPEND_URL
-    		+ "?first=" + URLEncoder.encode(first, "UTF-8")
-    		+ "&last=" + URLEncoder.encode(last, "UTF-8")
-    		+ "&street=" + URLEncoder.encode(street, "UTF-8")
-    		+ "&city=" + URLEncoder.encode(city, "UTF-8")
-    		+ "&state=" + URLEncoder.encode(state, "UTF-8")
-    		+ "&zip=" + URLEncoder.encode(zip, "UTF-8")
+    		+ "?first=" + utf8Encode(first)
+    		+ "&last=" + utf8Encode(last)
+    		+ "&street=" + utf8Encode(street)
+    		+ "&city=" + utf8Encode(city)
+    		+ "&state=" + utf8Encode(state)
+    		+ "&zip=" + utf8Encode(zip)
     		+ "&api_key=" + apiKey;
     return getJsonResponse(url);
   }
@@ -280,7 +295,7 @@ public class TowerDataApi {
    * @throws Exception  Throws error code on all HTTP statuses outside of 200 <= status < 300
    */
   public JSONObject appendPostal(String email) throws Exception {
-    String url  = EPPEND_URL + "?email=" + URLEncoder.encode(email, "UTF-8") + "&api_key=" + apiKey;
+    String url  = EPPEND_URL + "?email=" + utf8Encode(email) + "&api_key=" + apiKey;
     return getJsonResponse(url);
   }
 
@@ -376,4 +391,7 @@ public class TowerDataApi {
     return "TowerDataApi/Java/5.0";
   }
   
+  private static String utf8Encode(String s) throws UnsupportedEncodingException {
+	  return URLEncoder.encode(s, "UTF-8");
+  }
 }
