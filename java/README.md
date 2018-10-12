@@ -13,14 +13,15 @@ Example
 
 The API is queried by calling any of the query functions belonging
 to the TowerDataApi file. An example, TowerDataApiExample, is
-provided. Modify this file with your API key(s).
-From the command line, you can compile this class as follows.
+provided. This example queries the TowerData API for an
+email. From the command line, you can compile this class as follows.
 
       javac -cp <path-to-towerdata-api-complete.jar> TowerDataApiExample.java
 
+This example class takes two arguments: an api-key and the email to query.
 After compiling the class you can run it from the command line as follows.
 
-      java -cp <path-to-towerdata-api-complete.jar> com.towerdata.api.personalization.TowerDataApiExample
+      java -cp <path-to-towerdata-api-complete.jar> com.towerdata.api.personalization.TowerDataApiExample <api-key> <email>
 
 API Keys
 --------

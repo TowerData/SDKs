@@ -25,62 +25,56 @@ import org.json.JSONObject;
 
 public class TowerDataApiExample {
 	public static void main(String[] args) {
-		// Set your API key(s) here
-		String validationApiKey = "";
-		String intelligenceApiKey = "";
-
-		// Email Validation
-		if (!validationApiKey.isEmpty()) {
-			TowerDataApi api = new TowerDataApi(validationApiKey);
-	
-			// valid
-			String email = "info@towerdata.com";
-			try {
-				JSONObject response = api.validateEmail(email);
-				System.out.println("\nValidate email:\n" + response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-	
-			// invalid with correction
-			email = "info@@towerdata,com";
-			try {
-				JSONObject response = api.validateEmail(email);
-				System.out.println("\nValidate email:\n" + response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		if (args.length < 1) {
+			throw new IllegalArgumentException("API key required as first command-line argument.");
 		}
 
-		// Email Intelligence
-		if (!intelligenceApiKey.isEmpty()) {
-			TowerDataApi api = new TowerDataApi(intelligenceApiKey);
+		String apiKey = args[0];
+		TowerDataApi api = new TowerDataApi(apiKey);
 
-			// Query by email - return all fields
-			String email = "info@towerdata.com";
-			try {
-				JSONObject response = api.queryByEmail(email);
-				System.out.println("\nQuery by email - all fields:\n" + response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			// Query by email - limit fields
+		// Query by email given in command-line argument
+		try {
+			String email = args.length < 2 ? "info@towerdata.com" : args[1];
 			String fields = "age,gender,household_income,home_owner_status,marital_status";
-			try {
-				JSONObject response = api.queryByEmail(email, fields);
-				System.out.println("\nQuery by email - limit fields:\n" + response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			JSONObject response = api.queryByEmail(email, fields);
+			System.out.println("Query by email:\n" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-			// Bulk Query
-			List<Map<String, String>> list = new ArrayList<>();
+		// Email Validation - valid example
+		try {
+			String email = "info@towerdata.com";
+			JSONObject response = api.validateEmail(email);
+			System.out.println("\nValidate email - valid example:\n" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	
+		// Email Validation - correction example
+		try {
+			String email = "info@@towerdata,com";
+			JSONObject response = api.validateEmail(email);
+			System.out.println("\nValidate email - correction example:\n" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Query by email example
+		try {
+			String email = "info@towerdata.com";
+			String fields = "age,gender,household_income,home_owner_status,marital_status";
+			JSONObject response = api.queryByEmail(email, fields);
+			System.out.println("\nQuery by email example:\n" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Bulk Query example
+		try {
 			Map<String, String> map1 = new HashMap<>();
 			map1.put("email", "info@towerdata.com");
-			list.add(map1);
-	
+
 			Map<String, String> map2 = new HashMap<>();
 			map2.put("first", "Tower");
 			map2.put("last", "Data");
@@ -88,14 +82,15 @@ public class TowerDataApiExample {
 			map2.put("city", "New York");
 			map2.put("state", "NY");
 			map2.put("zip", "10003");
+
+			List<Map<String, String>> list = new ArrayList<>();
+			list.add(map1);
 			list.add(map2);
-	
-			try {
-				JSONArray response = api.bulkQuery(list);
-				System.out.println("\nBulk Query:\n" + response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			String fields = "age,gender,household_income,home_owner_status,marital_status";
+			JSONArray response = api.bulkQuery(list, fields);
+			System.out.println("\nBulk Query example:\n" + response);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

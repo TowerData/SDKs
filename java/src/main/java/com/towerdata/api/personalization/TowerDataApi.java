@@ -254,14 +254,29 @@ public class TowerDataApi {
     }
     return getJsonResponse(url);
   }
-
+  
+  /**
+   * @see #bulkQuery(List, String)
+   */
+  public JSONArray bulkQuery(List<Map<String,String>> set) throws Exception {
+    return bulkQuery(set, "");
+  }
+  
   /**
    * @param set
+   * @param fields      A comma-separated list of the data fields you want returned.
+   *                    If your API key is configured for multiple data fields,
+   *                    you can specify which ones you want returned.
+   *                    You will only be charged for the data you receive.
+   *                    If fields is empty, all data fields configured in your API key will be returned.
    * @return            Returns a JSONArray of the responses
    * @throws Exception
    */
-  public JSONArray bulkQuery(List<Map<String,String>> set) throws Exception {
+  public JSONArray bulkQuery(List<Map<String,String>> set, String fields) throws Exception {
     String urlStr = BULK_URL + "?api_key=" + apiKey;
+    if (fields != null && !fields.isEmpty()) {
+      urlStr += "&fields=" + fields;
+    }
     return new JSONArray(bulkJsonResponse(urlStr, new JSONArray(set).toString()));
   }
 

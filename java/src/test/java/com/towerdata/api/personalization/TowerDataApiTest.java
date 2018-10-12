@@ -88,7 +88,7 @@ public class TowerDataApiTest {
 
 	@Test
 	public void queryByNaz() throws Exception {
-		JSONObject response = intelligenceApi.queryByNaz("Tower", "Data", "10003", null);
+		JSONObject response = intelligenceApi.queryByNaz("Tower", "Data", "10003-2332", null);
 		System.out.println("Query by NAZ:\n" + response);
 		assertResponse(response);
 	}
