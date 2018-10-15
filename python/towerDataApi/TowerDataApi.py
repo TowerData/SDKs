@@ -116,9 +116,9 @@ class TowerDataApi:
         You will only be charged for the data you receive.
         """
         if fields:
-            url = '%s&sha1_email=%s' % (self.base_path, quote(sha1_email))
-        else:
             url = '%s&sha1_email=%s&fields=%s' % (self.base_path, quote(sha1_email), quote(fields))
+        else:
+            url = '%s&sha1_email=%s' % (self.base_path, quote(sha1_email))
         return self.__do_get_request(url)
         
     def query_by_nap(self, first, last, street, city, state, email=None):

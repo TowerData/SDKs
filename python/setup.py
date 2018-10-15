@@ -4,7 +4,7 @@ setup(
     name='TowerDataApi',
     author='TowerData',
     author_email='developer@towerdata.com',
-    version='0.2.1',
+    version='0.3.0',
     packages=['towerDataApi'],
     url='http://www.towerdata.com',
     description='A library for interacting with TowerData\'s Personalization API',

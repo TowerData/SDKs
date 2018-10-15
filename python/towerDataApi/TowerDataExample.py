@@ -9,10 +9,11 @@ and each k/v pair is sent to std out """
 
 api_key = 'YOUR_API_KEY'    # Set your API key here
 email = sys.argv[1]         # Command line argument
+hash_email = False
 fields = 'age,gender,household_income,home_owner_status,marital_status'
 api = TowerDataApi.TowerDataApi(api_key)   # Instance of the API class
 try:
-    response = api.query_by_email(email, fields)
+    response = api.query_by_email(email, hash_email, fields)
     for k, v in response.iteritems():
         print('%s = %s' % (k, v))
 except Exception as inst:       # HTTP code returned other than 200
