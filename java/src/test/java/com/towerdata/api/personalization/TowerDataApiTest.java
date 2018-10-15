@@ -17,8 +17,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TowerDataApiTest {
-	private static TowerDataApi tdApi;
-	private static TowerDataApi evApi;
+	private static TowerDataApi intelligenceApi;
+	private static TowerDataApi validationApi;
 	private static TowerDataApi emailAppendApi;
 	private static TowerDataApi postalAppendApi;
 
@@ -28,60 +28,67 @@ public class TowerDataApiTest {
 		try (Reader reader = new FileReader("test.properties")) {
 			properties.load(reader);
 		}
-		String tdApiKey = properties.getProperty("td.api.key");
-		String evApiKey = properties.getProperty("ev.api.key");
+		String intelligenceApiKey = properties.getProperty("intelligence.api.key");
+		String validationApiKey = properties.getProperty("validation.api.key");
 		String emailAppendApiKey = properties.getProperty("email_append.api.key");
 		String postalAppendApiKey = properties.getProperty("postal_append.api.key");
-		if (!populated(tdApiKey)) throw new IllegalStateException("td.api.key not set in test.properties");
-		if (!populated(evApiKey)) throw new IllegalStateException("ev.api.key not set in test.properties");
+		if (!populated(intelligenceApiKey)) throw new IllegalStateException("intelligence.api.key not set in test.properties");
+		if (!populated(validationApiKey)) throw new IllegalStateException("validation.api.key not set in test.properties");
 		if (!populated(emailAppendApiKey)) throw new IllegalStateException("email_append.api.key not set in test.properties");
 		if (!populated(postalAppendApiKey)) throw new IllegalStateException("postal_append.api.key not set in test.properties");
-		tdApi = new TowerDataApi(tdApiKey);
-		evApi = new TowerDataApi(evApiKey);
+		intelligenceApi = new TowerDataApi(intelligenceApiKey);
+		validationApi = new TowerDataApi(validationApiKey);
 		emailAppendApi = new TowerDataApi(emailAppendApiKey);
 		postalAppendApi = new TowerDataApi(postalAppendApiKey);
 	}
 
 	@Test
 	public void validateEmail() throws Exception {
-		JSONObject response = evApi.validateEmail("demo@towerdata.com");
+		JSONObject response = validationApi.validateEmail("demo@towerdata.com");
 		System.out.println("Validate email:\n" + response);
 		assertResponse(response);
 	}
 
 	@Test
 	public void queryByEmail() throws Exception {
-		JSONObject response = tdApi.queryByEmail("demo@towerdata.com", true);
+		JSONObject response = intelligenceApi.queryByEmail("demo@towerdata.com", true);
 		System.out.println("Query by email:\n" + response);
 		assertResponse(response);
 	}
 
 	@Test
+	public void queryByEmailWithFields() throws Exception {
+		JSONObject response = intelligenceApi.queryByEmail("demo@towerdata.com", "age,gender,household_income,home_owner_status,marital_status");
+		System.out.println("Query by email with fields:\n" + response);
+		assertResponse(response);
+	}
+
+	@Test
 	public void queryByMd5() throws Exception {
-		String md5 = tdApi.MD5Hex("demo@towerdata.com");
-		JSONObject response = tdApi.queryByMd5(md5);
+		String md5 = intelligenceApi.MD5Hex("demo@towerdata.com");
+		JSONObject response = intelligenceApi.queryByMd5(md5);
 		System.out.println("Query by MD5:\n" + response);
 		assertResponse(response);
 	}
 
 	@Test
 	public void queryBySha1() throws Exception {
-		String sha1 = tdApi.SHA1Hex("demo@towerdata.com");
-		JSONObject response = tdApi.queryBySha1(sha1);
+		String sha1 = intelligenceApi.SHA1Hex("demo@towerdata.com");
+		JSONObject response = intelligenceApi.queryBySha1(sha1);
 		System.out.println("Query by SHA1:\n" + response);
 		assertResponse(response);
 	}
 
 	@Test
 	public void queryByNap() throws Exception {
-		JSONObject response = tdApi.queryByNap("Tower", "Data", "33 Irving Place 3rd Floor, Suite 4048", "New York", "NY", "");
+		JSONObject response = intelligenceApi.queryByNap("Tower", "Data", "33 Irving Place 3rd Floor, Suite 4048", "New York", "NY", null);
 		System.out.println("Query by NAP:\n" + response);
 		assertResponse(response);
 	}
 
 	@Test
 	public void queryByNaz() throws Exception {
-		JSONObject response = tdApi.queryByNaz("Tower", "Data", "10003", "");
+		JSONObject response = intelligenceApi.queryByNaz("Tower", "Data", "10003-2332", null);
 		System.out.println("Query by NAZ:\n" + response);
 		assertResponse(response);
 	}
@@ -92,7 +99,7 @@ public class TowerDataApiTest {
 		list.add(element("sample@towerdata.com", "",      "",     "",                                      "",         "",   ""     ));
 		list.add(element("",                     "Tower", "Data", "33 Irving Place 3rd Floor, Suite 4048", "New York", "NY", "10003"));
 		list.add(element("demo@towerdata.com",   "",      "",     "",                                      "New York", "NY", "10003"));
-		JSONArray response = tdApi.bulkQuery(list);
+		JSONArray response = intelligenceApi.bulkQuery(list);
 		System.out.println("Query bulk:\n" + response);
 		assertNotNull(response);
 		assertTrue(response.toString().startsWith("[{") && response.toString().endsWith("}]"));
