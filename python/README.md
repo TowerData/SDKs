@@ -10,14 +10,17 @@ How to Use
 Installation
 ------------
 
-> pip install towerDataApi
+    git clone https://github.com/TowerData/SDKs.git
+    cd SDKs/python
+    python setup.py sdist
+    pip install dist/TowerDataApi-0.3.0.tar.gz --user -U -r requirements.txt
 
 Usage
 -----
  
     from towerDataApi import TowerDataApi
     api = TowerDataApi.TowerDataApi('API_KEY')
-    api.query_by_email('test@example.com')
+    api.query_by_email('info@towerdata.com', False, 'gender,age')
     {u'gender': u'Male', u'age': u'25-34'}
 
 Query Options
@@ -66,14 +69,6 @@ Contributors
 Nicole Allard <nicole at rapleaf dot com>
 Bojan  Milosavljevic <milboj at gmail dot com>
 
-Dependencies
-============
-urllib3
-
-> pip install urllib3
-
-or visit the url https://github.com/shazow/urllib3/zipball/master.
-Once you've unzipped the download, open a terminal window and navigate to the folder into which you unzipped the download. When you open the folder, one of the subdirectories is 'urllib3.' Open it. It contains a script called setup.py which you'll run via the command 'python setup.py install'.
 
 Note that, on unsuccessful requests, we raise an error. Unsuccessful requests are any requests which send back an http response status outside of the range 200 <= status < 300.
 
