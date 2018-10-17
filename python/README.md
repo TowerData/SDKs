@@ -64,12 +64,6 @@ If you have suggestions or patches, feel free to email us at
 <developer at towerdata dot com>. We look forward to hearing from you!
 
 
-Contributors
-============
-Nicole Allard <nicole at rapleaf dot com>
-Bojan  Milosavljevic <milboj at gmail dot com>
-
-
 Note that, on unsuccessful requests, we raise an error. Unsuccessful requests are any requests which send back an http response status outside of the range 200 <= status < 300.
 
 License

@@ -83,13 +83,6 @@ Contributing
 If you have suggestions or patches, feel free to email us at
 [developer at towerdata dot com]. We look forward to hearing from you!
 
-Contributors
-============
- - Greg Poulos [greg at rapleaf dot com]
- - Sean Carr [sean at rapleaf dot com]
- - Vlad Shulman [vlad at rapleaf dot com]
- - Bojan Milosavljevic [milboj at gmail dot com]
-
 License
 =======
 Copyright 2014 TowerData
