@@ -1,4 +1,4 @@
-# Copyright 2011 Rapleaf
+# Copyright 2018 TowerData
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -28,6 +28,8 @@ module TowerDataApi
   API_VERSION= 5.freeze
   BASE_PATH= '/td'.freeze
   BULK_PATH= '/ei/bulk'.freeze
+  VAL_PATH = '/ev'.freeze
+  EPPEND_PATH = '/eppend'.freeze
 
   class Api
 
@@ -40,10 +42,17 @@ module TowerDataApi
 
     # Takes an e-mail and returns a hash which maps attribute fields onto attributes
     # Options:
-    #  :hash_email     - the email will be hashed before it's sent to Rapleaf
+    #  :hash_email     - the email will be hashed before it's sent to TowerData
+    #  :fields         - comma-separated list of data fields you want returned
     def query_by_email(email, options = {})
       if options[:hash_email]
-        query_by_sha1(Digest::SHA1.hexdigest(email.downcase))
+        if options[:fields]
+          query_by_sha1(Digest::SHA1.hexdigest(email.downcase), options[:fields])
+        else
+          query_by_sha1(Digest::SHA1.hexdigest(email.downcase))
+        end
+      elsif options[:fields]
+        get_json_response("#{base_path}&email=#{url_encode(email)}&fields=#{url_encode(options[:fields])}")
       else
         get_json_response("#{base_path}&email=#{url_encode(email)}")
       end
@@ -52,21 +61,30 @@ module TowerDataApi
     # Takes an e-mail that has already been hashed by md5
     # and returns a hash which maps attribute fields onto attributes,
     # optionally showing available data in the response
-    def query_by_md5(md5_email, options = {})
-      get_json_response("#{base_path}&md5_email=#{url_encode(md5_email)}")
+    def query_by_md5(md5_email, fields = nil)
+      if fields.nil?
+        get_json_response("#{base_path}&md5_email=#{url_encode(md5_email)}")
+      else
+        get_json_response("#{base_path}&md5_email=#{url_encode(md5_email)}&fields=#{url_encode(fields)}")
+      end
     end
 
     # Takes an e-mail that has already been hashed by sha1
     # and returns a hash which maps attribute fields onto attributes,
     # optionally showing available data in the response
-    def query_by_sha1(sha1_email, options = {})
-      get_json_response("#{base_path}&sha1_email=#{url_encode(sha1_email)}")
+    def query_by_sha1(sha1_email, fields = nil)
+      if fields.nil?
+        get_json_response("#{base_path}&sha1_email=#{url_encode(sha1_email)}")
+      else
+        get_json_response("#{base_path}&sha1_email=#{url_encode(sha1_email)}&fields=#{url_encode(fields)}")
+      end
     end
 
     # Takes first name, last name, and postal (street, city, and state acronym),
     # and returns a hash which maps attribute fields onto attributes
     # Options:
     #  :email          - query with an email to increase the hit rate
+    #  :fields         - comma-separated list of data fields you want returned
     def query_by_nap(first, last, street, city, state, options = {})
       if options[:email]
         url = "#{base_path}&email=#{url_encode(options[:email])}&first=#{url_encode(first)}&last=#{url_encode(last)}" +
@@ -74,6 +92,9 @@ module TowerDataApi
       else
         url = "#{base_path}&first=#{url_encode(first)}&last=#{url_encode(last)}" +
           "&street=#{url_encode(street)}&city=#{url_encode(city)}&state=#{url_encode(state)}"
+      end
+      if options[:fields]
+        url += "&fields=#{url_encode(options[:fields])}"
       end
       get_json_response(url)
     end
@@ -83,50 +104,53 @@ module TowerDataApi
     # and returns a hash which maps attribute fields onto attributes
     # Options:
     #  :email          - query with an email to increase the hit rate
+    #  :fields         - comma-separated list of data fields you want returned
     def query_by_naz(first, last, zip4, options = {})
       if options[:email]
         url = "#{base_path}&email=#{url_encode(options[:email])}&first=#{url_encode(first)}&last=#{url_encode(last)}&zip4=#{zip4}"
       else
         url = "#{base_path}&first=#{url_encode(first)}&last=#{url_encode(last)}&zip4=#{zip4}"
       end
+      if options[:fields]
+        url += "&fields=#{url_encode(options[:fields])}"
+      end
       get_json_response(url)
     end
 
-
-    # For given email returns EmailValidation object
-    # This method will rise TowerDataApi::Error::Unsupported 
-    # if yours api key doesn't have email validation field 
+    # Check if email is valid
     #
-    def email_validation email
-      begin
-        result = query_by_email email
-      rescue TowerDataApi::Error::BadRequest 
-        result = {'email_validation' => {'ok' => false}}
+    def validate_email(email, timeout = 0)
+      url = "#{val_path}&email=#{url_encode(email)}"
+      client_timeout = Configuration.val_timeout
+      if timeout > 0
+        clien_timeout = timeout + 1
+        url += "&timeout=#{timeout}"
       end
-
-      if result.has_key? 'email_validation'
-        EmailValidation.new result['email_validation']
-      else
-        raise TowerDataApi::Error::Unsupported, 'Email validation is not supported with yours api key.' 
-      end
+      get_json_response(url, client_timeout)
     end
-
-    # Check is email valid
-    # This method will rise TowerDataApi::Error::Api 
-    # if yours api key doesn't have email validation field 
-    # Value can be true, false and nil 
-    def valid_email? email
-      email_validation(email).valid?
-    end
-
 
     # Get bulk request 
     # set - is array of hashes in format
     #
     #  [{email: 'first_email'}, {email: 'second_email'}]
     #
-    def bulk_query(set)
-      get_bulk_response(bulk_path, JSON.generate(set))
+    def bulk_query(set, fields = nil)
+      path = bulk_path
+      if !fields.nil?
+        path += "&fields=#{url_encode(fields)}"
+      end
+      get_bulk_response(path, JSON.generate(set))
+    end
+
+    # Takes first name, last name, street, city, and zip code,
+    # and returns the matched email
+    def append_email(first, last, street, city, state, zip)
+      get_json_response("#{eppend_path}&first=#{url_encode(first)}&last=#{url_encode(last)}&street=#{url_encode(street)}&city=#{url_encode(city)}&state=#{url_encode(state)}&zip=#{url_encode(zip)}")
+    end
+
+    # Takes an email and returns the matched postal data
+    def append_postal(email)
+      get_json_response("#{eppend_path}&email=#{url_encode(email)}")
     end
 
     private
@@ -136,7 +160,7 @@ module TowerDataApi
     end
 
     def get_bulk_response(path, data)
-      response = Timeout::timeout(@BULK_TIMEOUT) do
+      response = Timeout::timeout(Configuration.bulk_timeout) do
         begin
           http_client.post(path, data, HEADERS.merge('Content-Type' => 'application/json'))
         rescue EOFError # Connection cut out. Just try a second time.
@@ -155,8 +179,8 @@ module TowerDataApi
     # Note that an exception is raised in the case that
     # an HTTP response code other than 200 is sent back
     # The error code and error body are put in the exception's message
-    def get_json_response(path)
-      response = Timeout::timeout(Configuration.timeout) do
+    def get_json_response(path, timeout = Configuration.timeout)
+      response = Timeout::timeout(timeout) do
         begin
           http_client.get(path, HEADERS)
         rescue EOFError # Connection cut out. Just try a second time.
@@ -187,6 +211,14 @@ module TowerDataApi
 
     def bulk_path
       "#{api_path}#{BULK_PATH}?api_key=#{@api_key}"
+    end
+
+    def eppend_path
+      "#{api_path}#{EPPEND_PATH}?api_key=#{@api_key}"
+    end
+
+    def val_path
+      "#{api_path}#{VAL_PATH}?api_key=#{@api_key}"
     end
 
     def base_path
