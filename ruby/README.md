@@ -101,6 +101,14 @@ This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a s
  - :email          => You can include an email in your NAP query to increase the hit rate. Defaults to nil.
  - :fields         => A comma-separated list of the data fields you want returned. If your API key is configured for multiple data fields, you can specify which ones you want returned. You will only be charged for the data you receive.
 
+### email_validation(email)
+
+This method queries TowerData's API with email and return email_validation object. Raise error if email_validation is not enabled.
+
+### valid_email?(email)
+
+This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled.
+
 ### append_email(first, last, street, city, state, zip)
 
 Takes first name, last name, street, city, and zip code, and returns the matched email.

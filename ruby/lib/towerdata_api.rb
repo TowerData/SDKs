@@ -46,11 +46,7 @@ module TowerDataApi
     #  :fields         - comma-separated list of data fields you want returned
     def query_by_email(email, options = {})
       if options[:hash_email]
-        if options[:fields]
-          query_by_sha1(Digest::SHA1.hexdigest(email.downcase), options[:fields])
-        else
-          query_by_sha1(Digest::SHA1.hexdigest(email.downcase))
-        end
+        query_by_sha1(Digest::SHA1.hexdigest(email.downcase), options[:fields])
       elsif options[:fields]
         get_json_response("#{base_path}&email=#{url_encode(email)}&fields=#{url_encode(options[:fields])}")
       else
@@ -127,6 +123,32 @@ module TowerDataApi
         url += "&timeout=#{timeout}"
       end
       get_json_response(url, client_timeout)
+    end
+
+    # For given email returns EmailValidation object
+    # This method will rise TowerDataApi::Error::Unsupported
+    # if yours api key doesn't have email validation field
+    #
+    def email_validation email
+      begin
+        result = validate_email email
+      rescue TowerDataApi::Error::BadRequest
+        result = {'email_validation' => {'ok' => false}}
+      end
+
+      if result.has_key? 'email_validation'
+        EmailValidation.new result['email_validation']
+      else
+        raise TowerDataApi::Error::Unsupported, 'Email validation is not supported with yours api key.'
+      end
+    end
+
+    # Check is email valid
+    # This method will rise TowerDataApi::Error::Api
+    # if yours api key doesn't have email validation field
+    # Value can be true, false and nil
+    def valid_email? email
+      email_validation(email).valid?
     end
 
     # Get bulk request 
