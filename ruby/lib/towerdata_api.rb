@@ -133,7 +133,7 @@ module TowerDataApi
       begin
         result = validate_email email
       rescue TowerDataApi::Error::BadRequest
-        result = {'email_validation' => {'ok' => false}}
+        result = {'email_validation' => {'status' => 'invalid'}}
       end
 
       if result.has_key? 'email_validation'
