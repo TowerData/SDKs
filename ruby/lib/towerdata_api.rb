@@ -14,7 +14,6 @@
 
 require "json"
 require "net/https"
-require "timeout"
 require "digest"
 require "open-uri"
 require "towerdata_api/configuration"
@@ -37,7 +36,7 @@ module TowerDataApi
       @api_key = api_key.nil? ? Configuration.api_key : api_key
       options.each do |key, value|
         Configuration.send("#{key}=", value)
-      end 
+      end
     end
 
     # Takes an e-mail and returns a hash which maps attribute fields onto attributes
@@ -107,9 +106,7 @@ module TowerDataApi
       else
         url = "#{base_path}&first=#{url_encode(first)}&last=#{url_encode(last)}&zip4=#{zip4}"
       end
-      if options[:fields]
-        url += "&fields=#{url_encode(options[:fields])}"
-      end
+      url += "&fields=#{url_encode(options[:fields])}" if options[:fields]
       get_json_response(url)
     end
 
@@ -119,7 +116,7 @@ module TowerDataApi
       url = "#{val_path}&email=#{url_encode(email)}"
       client_timeout = Configuration.val_timeout
       if timeout > 0
-        clien_timeout = timeout + 1
+        client_timeout = timeout + 1
         url += "&timeout=#{timeout}"
       end
       get_json_response(url, client_timeout)
@@ -129,7 +126,7 @@ module TowerDataApi
     # This method will rise TowerDataApi::Error::Unsupported
     # if yours api key doesn't have email validation field
     #
-    def email_validation email
+    def email_validation(email)
       begin
         result = validate_email email
       rescue TowerDataApi::Error::BadRequest
@@ -147,7 +144,7 @@ module TowerDataApi
     # This method will rise TowerDataApi::Error::Api
     # if yours api key doesn't have email validation field
     # Value can be true, false and nil
-    def valid_email? email
+    def valid_email?(email)
       email_validation(email).valid?
     end
 
@@ -177,17 +174,16 @@ module TowerDataApi
 
     private
 
-    def url_encode value 
+    def url_encode(value)
        URI::encode value
     end
 
     def get_bulk_response(path, data)
-      response = Timeout::timeout(Configuration.bulk_timeout) do
-        begin
-          http_client.post(path, data, HEADERS.merge('Content-Type' => 'application/json'))
-        rescue EOFError # Connection cut out. Just try a second time.
-          http_client.post(path, data, HEADERS.merge('Content-Type' => 'application/json'))
-        end
+      begin
+        retries ||= 0
+        response = http_client(Configuration.bulk_timeout).post(path, data, HEADERS.merge('Content-Type' => 'application/json'))
+      rescue EOFError # Connection cut out. Just try a second time.
+        retry if (retries += 1) < 2
       end
 
       if response.code =~ /^2\d\d/
@@ -202,17 +198,16 @@ module TowerDataApi
     # an HTTP response code other than 200 is sent back
     # The error code and error body are put in the exception's message
     def get_json_response(path, timeout = Configuration.timeout)
-      response = Timeout::timeout(timeout) do
-        begin
-          http_client.get(path, HEADERS)
-        rescue EOFError # Connection cut out. Just try a second time.
-          http_client.get(path, HEADERS)
-        end
+      begin
+        retries ||= 0
+        response = http_client(timeout).get(path, HEADERS)
+      rescue EOFError # Connection cut out. Just try a second time.
+        retry if (retries += 1) < 2
       end
 
       if response.code =~ /^2\d\d/
-        (response.body && response.body != "") ? JSON.parse(response.body) : {}
-      elsif response.code == '400' 
+        (response.body && response.body != '') ? JSON.parse(response.body) : {}
+      elsif response.code == '400'
         raise TowerDataApi::Error::BadRequest, "Bad request#{response.code}: \"#{response.body}\""
       else
         raise TowerDataApi::Error::Api, "Error Code #{response.code}: \"#{response.body}\""
@@ -220,10 +215,11 @@ module TowerDataApi
     end
 
     # Returns http connection to HOST on PORT
-    def http_client
+    def http_client(timeout = Configuration.timeout)
       unless defined?(@http_client)
         @http_client = Net::HTTP.new(HOST, PORT)
         @http_client.use_ssl = true
+        @http_client.read_timeout = timeout # seconds
         @http_client.ca_file = Configuration.ca_file if Configuration.ca_file
         #@http_client.verify_mode = OpenSSL::SSL::VERIFY_PEER
         @http_client.start
