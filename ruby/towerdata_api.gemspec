@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = ">=1.6.1"
   s.summary = %q{A library for interacting with TowerData's Personalization API.}
   s.add_development_dependency "rspec", '~>3.1'
+  s.add_development_dependency "simplecov", '~>0.16.0'
 
 end

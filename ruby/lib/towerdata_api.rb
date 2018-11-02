@@ -164,7 +164,7 @@ module TowerDataApi
     # Takes first name, last name, street, city, and zip code,
     # and returns the matched email
     def append_email(first, last, street, city, state, zip)
-      get_json_response("#{eppend_path}&first=#{url_encode(first)}&last=#{url_encode(last)}&street=#{url_encode(street)}&city=#{url_encode(city)}&state=#{url_encode(state)}&zip=#{url_encode(zip)}")
+      get_json_response("#{eppend_path}&first=#{url_encode(first)}&last=#{url_encode(last)}&street=#{url_encode(street)}&city=#{url_encode(city)}&state=#{url_encode(state)}&zip=#{url_encode(zip.to_s)}")
     end
 
     # Takes an email and returns the matched postal data
@@ -221,7 +221,6 @@ module TowerDataApi
         @http_client.use_ssl = true
         @http_client.read_timeout = timeout # seconds
         @http_client.ca_file = Configuration.ca_file if Configuration.ca_file
-        #@http_client.verify_mode = OpenSSL::SSL::VERIFY_PEER
         @http_client.start
       end
       @http_client
