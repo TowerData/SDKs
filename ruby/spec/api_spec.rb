@@ -1,17 +1,18 @@
 require 'spec_helper'
 describe 'api_calls' do
-  API_KEY= ''
-  SIMPLE_API_KEY= ''
+  API_KEY = ENV['API_KEY']
+  SIMPLE_API_KEY = ENV['SIMPLE_API_KEY']
+
   it 'query without configuration' do
     api = TowerDataApi::Api.new API_KEY
-    value = api.query_by_email 'demo@towerdata.com'
+    value = api.query_by_email 'demo@towerdata.com', fields: 'gender,postal_address'
     expect(value).to include('gender')
     expect(value).to include('postal_address')
   end
 
-  describe 'from configruation' do
+  describe 'from configuration' do
     before :each do
-      # Api key must has eam and email_validation
+      # Api key must have eam and email_validation
       TowerDataApi::Configuration.begin do |config|
         config.api_key = API_KEY
       end
@@ -26,10 +27,10 @@ describe 'api_calls' do
     end
 
     it 'query by email' do
-      simple_query1 = @api.query_by_email 'demo@towerdata.com'
+      simple_query1 = @api.query_by_email 'demo@towerdata.com', fields: 'velocity,gender'
       check_email simple_query1
 
-      simple_query2 = @api.query_by_email 'demo@towerdata.com'
+      simple_query2 = @api.query_by_email 'demo@towerdata.com', fields: 'velocity,gender'
       check_email simple_query2
     end
 
@@ -90,29 +91,29 @@ describe 'api_calls' do
     end
 
     it 'query by md5' do
-      md5_query = @api.query_by_md5 Digest::MD5.hexdigest('demo@towerdata.com')
+      md5_query = @api.query_by_md5 Digest::MD5.hexdigest('demo@towerdata.com'), 'velocity,gender'
       check_email md5_query
     end
 
     it 'query by sha1' do
-      sha1_query = @api.query_by_sha1 Digest::SHA1.hexdigest('demo@towerdata.com')
+      sha1_query = @api.query_by_sha1 Digest::SHA1.hexdigest('demo@towerdata.com'), 'velocity,gender'
       check_email sha1_query
     end
 
     it 'query by naz' do
-      naz = @api.query_by_naz('bojan', 'milosavjevic', '111070')
+      naz = @api.query_by_naz('bojan', 'milosavjevic', '111070', fields: 'gender')
       expect( naz.class).to be Hash
       expect( naz["gender"]).to eql "Male"
     end
 
     it 'query by nap' do
-      nap = @api.query_by_nap('john', 'doe', 'Street 1', 'New York', 'NY')
+      nap = @api.query_by_nap('john', 'doe', 'Street 1', 'New York', 'NY', fields: 'gender')
       expect( nap.class).to be Hash
       expect( nap["gender"]).to eql "Male"
     end
 
     it 'query by nap with email option' do
-      nap = @api.query_by_nap('john', 'doe', 'Street 1', 'New York', 'NY', email: 'demo@towerdata.com')
+      nap = @api.query_by_nap('john', 'doe', 'Street 1', 'New York', 'NY', email: 'demo@towerdata.com', fields: 'gender')
       expect( nap.class).to be Hash
       expect( nap["gender"]).to eql "Male"
     end
