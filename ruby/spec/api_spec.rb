@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe 'api_calls' do
-  API_KEY= '49e4b5b2af8714c8944685908973f0b9'
-  SIMPLE_API_KEY= '3bf1014b97477eaf24fd9669de117cb9'
+  API_KEY= ''
+  SIMPLE_API_KEY= ''
   it 'query without configuration' do
     api = TowerDataApi::Api.new API_KEY
     value = api.query_by_email 'demo@towerdata.com'
@@ -22,7 +22,6 @@ describe 'api_calls' do
     def check_email output
       expect(output.kind_of? Hash).to be true
       expect(output.keys).to include('eam')
-      # expect(output.keys).to include('email_validation')
       expect(output.keys).to include('gender')
     end
 
