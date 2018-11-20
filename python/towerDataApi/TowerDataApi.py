@@ -69,9 +69,9 @@ class TowerDataApi:
         You will only be charged for the data you receive.
         """
         if hash_email:
-            s = hashlib.sha1()
-            s.update(email.lower())
-            return self.query_by_sha1(s.hexdigest(), fields)
+            m = hashlib.md5()
+            m.update(email.lower())
+            return self.query_by_md5(m.hexdigest(), fields)
         if fields:
             url = '%s&email=%s&fields=%s' % (self.base_path, quote(email), quote(fields))
         else:

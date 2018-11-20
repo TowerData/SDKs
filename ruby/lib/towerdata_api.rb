@@ -45,7 +45,7 @@ module TowerDataApi
     #  :fields         - comma-separated list of data fields you want returned
     def query_by_email(email, options = {})
       if options[:hash_email]
-        query_by_sha1(Digest::SHA1.hexdigest(email.downcase), options[:fields])
+        query_by_md5(Digest::MD5.hexdigest(email.downcase), options[:fields])
       elsif options[:fields]
         get_json_response("#{base_path}&email=#{url_encode(email)}&fields=#{url_encode(options[:fields])}")
       else
@@ -136,7 +136,7 @@ module TowerDataApi
       if result.has_key? 'email_validation'
         EmailValidation.new result['email_validation']
       else
-        raise TowerDataApi::Error::Unsupported, 'Email validation is not supported with yours api key.'
+        raise TowerDataApi::Error::Unsupported, 'Email validation is not supported with your API key.'
       end
     end
 
