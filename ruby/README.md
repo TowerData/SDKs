@@ -15,22 +15,25 @@ This gem depends on the "json" gem.
 
 Usage
 -----
+```ruby
     require 'towerdata_api'
-    api = TowerDataApi::Api.new('my secret API key')
+    # Get your API key from https://instantdata.towerdata.com
+    api = TowerDataApi::Api.new('Your_API_Key')
     h = api.query_by_email('info@towerdata.com', {:fields => 'age,gender,household_income,home_owner_status,marital_status'})
     => {"household_income":"25k-35k","home_owner_status":"Own","age":"65+","gender":"Male","marital_status":"Married"}
-
+```
 Or using global configuration
-
+```ruby
     require 'towerdata_api'
     TowerDataApi::Configuration.begin do |config|
-      config.api_key= 'my secret API key'
+      # Get your API key from https://instantdata.towerdata.com
+      config.api_key= 'Your_API_Key'
       config.timeout= 10 
     end
     api = TowerDataApi::Api.new
     h = api.query_by_email('info@towerdata.com', {:fields => 'age,gender,household_income,home_owner_status,marital_status'})
     => {"household_income":"25k-35k","home_owner_status":"Own","age":"65+","gender":"Male","marital_status":"Married"}
-
+```
 API Keys
 --------
 
@@ -53,10 +56,10 @@ is configured for.
 
 Constructor Options
 -------------------
-You can pass in an options hash to the API constructor, like so:
-
-    api = TowerData::Api.new('my secret API key', :timeout => 10)
-
+First parameter is your API key. You can pass in an options hash to the API constructor as second parameter, like so:
+```ruby
+    api = TowerData::Api.new('Your_API_Key', :timeout => 10)
+```
 The possible options/keys accepted by the constructor are:
 
  - :timeout => The max amount of time to wait for a request to finish. Defaults to 2.
@@ -75,17 +78,29 @@ The optional second parameter is the timeout in seconds; the API's default value
 
 If your API key is configured for demographic fields, they will be included in the response if the email is valid.
 
+### email_validation(email)
+
+This method queries TowerData's API with email and returns an email_validation object. An error is raised if email validation is not supported with your API key.
+
+### valid_email?(email)
+
+This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled.
+
 ### query_by_email(email, options)
 
 This method queries TowerData's API with the specified email. The options hash accepts the following keys:
 
- - :hash_email    => Whether to (SHA1) hash the email before querying TowerData's API with it. Defaults to nil.
+ - :hash_email    => Whether to (MD5) hash the email before querying TowerData's API with it. Defaults to nil.
  - :fields        => A comma-separated list of the data fields you want returned. If your API key is configured for multiple data fields, you can specify which ones you want returned. You will only be charged for the data you receive.
 
-### query_by_md5(md5_email, options)
-### query_by_sha1(sha1_email, options)
+### query_by_md5(md5_email, fields = nil)
+### query_by_sha1(sha1_email, fields = nil)
 
-These methods query TowerData's API with the hashed emails provided to them (either MD5 or SHA1, respectively). 
+These methods query TowerData's API with the hashed emails provided to them (either MD5 or SHA1, respectively).
+
+You can pass in an optional fields parameter, a comma-separated list of the data fields you want returned.
+If your API key is configured for multiple data fields, you can specify which ones you want returned.
+You will only be charged for the data you receive. 
 
 ### query_by_nap(first, last, street, city, state, options)
 
@@ -100,14 +115,6 @@ This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a s
 
  - :email          => You can include an email in your NAP query to increase the hit rate. Defaults to nil.
  - :fields         => A comma-separated list of the data fields you want returned. If your API key is configured for multiple data fields, you can specify which ones you want returned. You will only be charged for the data you receive.
-
-### email_validation(email)
-
-This method queries TowerData's API with email and return email_validation object. Raise error if email_validation is not enabled.
-
-### valid_email?(email)
-
-This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled.
 
 ### append_email(first, last, street, city, state, zip)
 

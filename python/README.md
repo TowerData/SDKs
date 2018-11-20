@@ -17,12 +17,13 @@ Installation
 
 Usage
 -----
- 
+```python
+    # Get your API key from https://instantdata.towerdata.com
     from towerDataApi import TowerDataApi
-    api = TowerDataApi.TowerDataApi('API_KEY')
-    api.query_by_email('info@towerdata.com', False, 'gender,age')
-    {u'gender': u'Male', u'age': u'25-34'}
-
+    api = TowerDataApi.TowerDataApi('Your_API_Key')
+    result = api.query_by_email('info@towerdata.com', False, 'gender,age')
+    # result is {u'gender': u'Male', u'age': u'25-34'}
+```
 Query Options
 -------------
 The egg supports several ways to query TowerData's API: email, hashed email (either MD5 or SHA1 hash), name and postal (NAP), or name and ZIP+4 (NAZ).
@@ -58,13 +59,14 @@ An optional email address may be provided to increase the match rate.
 This method queries TowerData's API with a name and ZIP+4 code. The ZIP+4 is a string with a 5-digit ZIP code and 4-digit extension separated by a dash.
 An optional email address may be provided to increase the match rate.
 
+Error handling
+--------------
+Note that, on unsuccessful requests, we raise an error. Unsuccessful requests are any requests which send back an http response status outside of the range 200 <= status < 300.
+
 Contributing
 ============
 If you have suggestions or patches, feel free to email us at
 <developer at towerdata dot com>. We look forward to hearing from you!
-
-
-Note that, on unsuccessful requests, we raise an error. Unsuccessful requests are any requests which send back an http response status outside of the range 200 <= status < 300.
 
 License
 =======
