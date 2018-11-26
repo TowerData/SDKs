@@ -78,14 +78,6 @@ The optional second parameter is the timeout in seconds; the API's default value
 
 If your API key is configured for demographic fields, they will be included in the response if the email is valid.
 
-### email_validation(email)
-
-This method queries TowerData's API with email and returns an email_validation object. An error is raised if email validation is not supported with your API key.
-
-### valid_email?(email)
-
-This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled.
-
 ### query_by_email(email, options)
 
 This method queries TowerData's API with the specified email. The options hash accepts the following keys:
@@ -124,6 +116,18 @@ Takes first name, last name, street, city, and zip code, and returns the matched
 
 Takes an email and returns the matched postal data.
 
+Deprecated Query Options
+------------------------
+
+The following email validation functions, while still available, are now deprecated. Please use validate_email(email, timeout = 0) instead.
+
+### email_validation(email)
+
+This method queries TowerData's API with email and returns an email_validation object. An error is raised if email validation is not supported with your API key.
+
+### valid_email?(email)
+
+This method queries TowerData's API with email and return boolean or nil if response is timeout. Raise error if email_validation is not enabled.
 
 Contributing
 ============
