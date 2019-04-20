@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{towerdata_api}
-  s.version = "1.3.1"
+  s.version = "2.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["TowerData"]
@@ -20,5 +20,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = ">=1.6.1"
   s.summary = %q{A library for interacting with TowerData's Personalization API.}
   s.add_development_dependency "rspec", '~>3.1'
+  s.add_development_dependency "simplecov", '~>0.16.0'
 
 end

@@ -4,6 +4,7 @@ module TowerDataApi
     @@api_key  = nil
     @@ca_file = nil
     @@bulk_timeout = 30
+    @@val_timeout = 11
     @@timeout = 2
     
     def self.api_key= api_key
@@ -34,8 +35,16 @@ module TowerDataApi
       @@bulk_timeout = timeout
     end
 
-    def self.timeout
-      @@timeout 
+    def self.bulk_timeout
+      @@bulk_timeout
+    end
+
+    def self.val_timeout= timeout
+      @@val_timeout = timeout
+    end
+
+    def self.val_timeout
+      @@val_timeout
     end
 
     def self.begin
